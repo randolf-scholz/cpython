@@ -613,7 +613,7 @@ struct _pattern {
         } MatchSequence;
 
         struct {
-            asdl_pattern_seq *patterns;
+            asdl_expr_seq *members;
         } MatchSet;
 
         struct {

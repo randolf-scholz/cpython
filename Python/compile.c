@@ -7374,31 +7374,56 @@ compiler_pattern_sequence(struct compiler *c, pattern_ty p,
 static int
 compiler_pattern_set(struct compiler *c, pattern_ty p, pattern_context *pc) {
     assert (p->kind == MatchSet_kind);
-    asdl_pattern_seq *patterns = p->v.MatchSet.patterns;
+    asdl_expr_seq *keys = p->v.MatchSet.members;
+    Py_ssize_t size = asdl_seq_LEN(keys);
 
-    Py_ssize_t size = asdl_seq_LEN(patterns);
-    Py_ssize_t star = -1;
-    int only_wildcard = 1;
-    int star_wildcard = 0;
-    // Find a starred name, if it exists. There may be at most one:
-    for (Py_ssize_t i = 0; i < size; i++) {
-        pattern_ty pattern = asdl_seq_GET(patterns, i);
-        if (pattern->kind == MatchStar_kind) {
-            if (star >= 0) {
-                const char *e = "multiple starred names in sequence pattern";
-                return compiler_error(c, LOC(p), e);
-            }
-            star_wildcard = WILDCARD_STAR_CHECK(pattern);
-            only_wildcard &= star_wildcard;
-            star = i;
-            continue;
-        }
-        only_wildcard &= WILDCARD_CHECK(pattern);
+    // Maintaining a set of Constant_kind kind keys allows us to raise a
+    // SyntaxError in the case of duplicates.
+    PyObject *seen = PySet_New(NULL);
+    if (seen == NULL) {
+        return ERROR;
     }
+
+    for (Py_ssize_t i = 0; i < size; i++) {
+        expr_ty key = asdl_seq_GET(keys, i);
+        if (key == NULL) {
+            const char *e = "can't use NULL keys in MatchSet ";
+            location loc = LOC((pattern_ty) asdl_seq_GET(keys, i));
+            compiler_error(c, loc, e);
+            goto error;
+        }
+        if (key->kind == Constant_kind) {
+            int in_seen = PySet_Contains(seen, key->v.Constant.value);
+            if (in_seen < 0) {
+                goto error;
+            }
+            if (in_seen) {
+                const char *e = "set pattern checks duplicate member (%R)";
+                compiler_error(c, LOC(p), e, key->v.Constant.value);
+                goto error;
+            }
+            if (PySet_Add(seen, key->v.Constant.value)) {
+                goto error;
+            }
+        }
+
+        else if (key->kind != Attribute_kind) {
+            const char *e = "set pattern may only match literals and attribute lookups";
+            compiler_error(c, LOC(p), e);
+            goto error;
+        }
+        if (compiler_visit_expr(c, key) < 0) {
+            goto error;
+        }
+    }
+
     // TODO: add implementation for set patterns (permutation invariant!)
     //   Basically, we should be able to duplicate the implementation of the keys check in the
     //   mapping pattern.
     return SUCCESS;
+error:
+    Py_DECREF(seen);
+    return ERROR;
 }
 
 static int

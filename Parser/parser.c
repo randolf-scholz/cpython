@@ -701,6 +701,7 @@ static expr_ty attr_rule(Parser *p);
 static expr_ty name_or_attr_rule(Parser *p);
 static pattern_ty group_pattern_rule(Parser *p);
 static pattern_ty sequence_pattern_rule(Parser *p);
+static pattern_ty set_pattern_rule(Parser *p);
 static asdl_seq* open_sequence_pattern_rule(Parser *p);
 static asdl_seq* maybe_sequence_pattern_rule(Parser *p);
 static pattern_ty maybe_star_pattern_rule(Parser *p);
@@ -8146,6 +8147,25 @@ closed_pattern_rule(Parser *p)
         D(fprintf(stderr, "%*c%s closed_pattern[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "sequence_pattern"));
     }
+    { // set_pattern
+        if (p->error_indicator) {
+            p->level--;
+            return NULL;
+        }
+        D(fprintf(stderr, "%*c> closed_pattern[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "set_pattern"));
+        pattern_ty set_pattern_var;
+        if (
+            (set_pattern_var = set_pattern_rule(p))  // set_pattern
+        )
+        {
+            D(fprintf(stderr, "%*c+ closed_pattern[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "set_pattern"));
+            _res = set_pattern_var;
+            goto done;
+        }
+        p->mark = _mark;
+        D(fprintf(stderr, "%*c%s closed_pattern[%d-%d]: %s failed!\n", p->level, ' ',
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "set_pattern"));
+    }
     { // mapping_pattern
         if (p->error_indicator) {
             p->level--;
@@ -9779,6 +9799,20 @@ star_pattern_rule(Parser *p)
     _res = NULL;
   done:
     _PyPegen_insert_memo(p, _mark, star_pattern_type, _res);
+    p->level--;
+    return _res;
+}
+
+// set_pattern: '{' members_pattern '}'
+// members_pattern: ','.member_pattern+ ','?
+// member_pattern: '*' caputure_pattern | key_pattern
+// key_pattern: literal_pattern | constant_pattern
+static pattern_ty
+set_pattern_rule(Parser *p)
+{
+    // TODO: implement set pattern rule.
+    pattern_ty _res = NULL;
+done:
     p->level--;
     return _res;
 }

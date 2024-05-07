@@ -2362,7 +2362,7 @@ symtable_visit_pattern(struct symtable *st, pattern_ty p)
         VISIT_SEQ(st, pattern, p->v.MatchSequence.patterns);
         break;
     case MatchSet_kind:
-        VISIT_SEQ(st, pattern, p->v.MatchSet.patterns);
+        VISIT_SEQ(st, expr, p->v.MatchSet.members);
         break;
     case MatchStar_kind:
         if (p->v.MatchStar.name) {

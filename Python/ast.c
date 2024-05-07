@@ -564,7 +564,25 @@ validate_pattern(struct validator *state, pattern_ty p, int star_ok)
             ret = validate_patterns(state, p->v.MatchSequence.patterns, /*star_ok=*/1);
             break;
         case MatchSet_kind:
-            ret = validate_patterns(state, p->v.MatchSet.patterns, /*star_ok=*/1);
+            asdl_expr_seq *members = p->v.MatchMapping.keys;
+            for (Py_ssize_t i = 0; i < asdl_seq_LEN(members); i++) {
+                expr_ty member = asdl_seq_GET(members, i);
+                if (member->kind == Constant_kind) {
+                    PyObject *literal = member->v.Constant.value;
+                    if (literal == Py_None || PyBool_Check(literal)) {
+                        /* validate_pattern_match_value will ensure the key
+                           doesn't contain True, False and None but it is
+                           syntactically valid, so we will pass those on in
+                           a special case. */
+                        continue;
+                    }
+                }
+                if (!validate_pattern_match_value(state, member)) {
+                    ret = 0;
+                    break;
+                }
+            }
+            ret = 1;
             break;
         case MatchMapping_kind:
             if (asdl_seq_LEN(p->v.MatchMapping.keys) != asdl_seq_LEN(p->v.MatchMapping.patterns)) {
