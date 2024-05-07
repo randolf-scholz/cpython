@@ -2361,6 +2361,9 @@ symtable_visit_pattern(struct symtable *st, pattern_ty p)
     case MatchSequence_kind:
         VISIT_SEQ(st, pattern, p->v.MatchSequence.patterns);
         break;
+    case MatchSet_kind:
+        VISIT_SEQ(st, pattern, p->v.MatchSet.patterns);
+        break;
     case MatchStar_kind:
         if (p->v.MatchStar.name) {
             symtable_add_def(st, p->v.MatchStar.name, DEF_LOCAL, LOCATION(p));

@@ -586,10 +586,17 @@ struct _match_case {
     asdl_stmt_seq *body;
 };
 
-enum _pattern_kind {MatchValue_kind=1, MatchSingleton_kind=2,
-                     MatchSequence_kind=3, MatchMapping_kind=4,
-                     MatchClass_kind=5, MatchStar_kind=6, MatchAs_kind=7,
-                     MatchOr_kind=8};
+enum _pattern_kind {
+    MatchValue_kind,
+    MatchSingleton_kind,
+    MatchSequence_kind,
+    MatchMapping_kind,
+    MatchSet_kind,
+    MatchClass_kind,
+    MatchStar_kind,
+    MatchAs_kind,
+    MatchOr_kind,
+};
 struct _pattern {
     enum _pattern_kind kind;
     union {
@@ -604,6 +611,10 @@ struct _pattern {
         struct {
             asdl_pattern_seq *patterns;
         } MatchSequence;
+
+        struct {
+            asdl_pattern_seq *patterns;
+        } MatchSet;
 
         struct {
             asdl_expr_seq *keys;

@@ -563,6 +563,9 @@ validate_pattern(struct validator *state, pattern_ty p, int star_ok)
         case MatchSequence_kind:
             ret = validate_patterns(state, p->v.MatchSequence.patterns, /*star_ok=*/1);
             break;
+        case MatchSet_kind:
+            ret = validate_patterns(state, p->v.MatchSet.patterns, /*star_ok=*/1);
+            break;
         case MatchMapping_kind:
             if (asdl_seq_LEN(p->v.MatchMapping.keys) != asdl_seq_LEN(p->v.MatchMapping.patterns)) {
                 PyErr_SetString(PyExc_ValueError,

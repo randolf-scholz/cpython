@@ -7159,6 +7159,8 @@ error:
     return ERROR;
 }
 
+
+
 static int
 compiler_pattern_or(struct compiler *c, pattern_ty p, pattern_context *pc)
 {
@@ -7370,6 +7372,36 @@ compiler_pattern_sequence(struct compiler *c, pattern_ty p,
 }
 
 static int
+compiler_pattern_set(struct compiler *c, pattern_ty p, pattern_context *pc) {
+    assert (p->kind == MatchSet_kind);
+    asdl_pattern_seq *patterns = p->v.MatchSet.patterns;
+
+    Py_ssize_t size = asdl_seq_LEN(patterns);
+    Py_ssize_t star = -1;
+    int only_wildcard = 1;
+    int star_wildcard = 0;
+    // Find a starred name, if it exists. There may be at most one:
+    for (Py_ssize_t i = 0; i < size; i++) {
+        pattern_ty pattern = asdl_seq_GET(patterns, i);
+        if (pattern->kind == MatchStar_kind) {
+            if (star >= 0) {
+                const char *e = "multiple starred names in sequence pattern";
+                return compiler_error(c, LOC(p), e);
+            }
+            star_wildcard = WILDCARD_STAR_CHECK(pattern);
+            only_wildcard &= star_wildcard;
+            star = i;
+            continue;
+        }
+        only_wildcard &= WILDCARD_CHECK(pattern);
+    }
+    // TODO: add implementation for set patterns (permutation invariant!)
+    //   Basically, we should be able to duplicate the implementation of the keys check in the
+    //   mapping pattern.
+    return SUCCESS;
+}
+
+static int
 compiler_pattern_value(struct compiler *c, pattern_ty p, pattern_context *pc)
 {
     assert(p->kind == MatchValue_kind);
@@ -7407,6 +7439,8 @@ compiler_pattern(struct compiler *c, pattern_ty p, pattern_context *pc)
             return compiler_pattern_sequence(c, p, pc);
         case MatchMapping_kind:
             return compiler_pattern_mapping(c, p, pc);
+        case MatchSet_kind:
+            return compiler_pattern_set(c, p, pc);
         case MatchClass_kind:
             return compiler_pattern_class(c, p, pc);
         case MatchStar_kind:
@@ -7414,7 +7448,7 @@ compiler_pattern(struct compiler *c, pattern_ty p, pattern_context *pc)
         case MatchAs_kind:
             return compiler_pattern_as(c, p, pc);
         case MatchOr_kind:
-            return compiler_pattern_or(c, p, pc);
+            return compiler_pattern_or(c, p, pc);\
     }
     // AST validator shouldn't let this happen, but if it does,
     // just fail, don't crash out of the interpreter

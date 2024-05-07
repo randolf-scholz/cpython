@@ -9960,6 +9960,17 @@ ast2obj_pattern(struct ast_state *state, struct validator *vstate, void* _o)
             goto failed;
         Py_DECREF(value);
         break;
+    case MatchSet_kind:
+        tp = (PyTypeObject *)state->MatchSet_type;
+        result = PyType_GenericNew(tp, NULL, NULL);
+        if (!result) goto failed;
+        value = ast2obj_list(state, vstate, (asdl_seq*)o->v.MatchSet.patterns,
+                             ast2obj_pattern);
+        if (!value) goto failed;
+        if (PyObject_SetAttr(result, state->patterns, value) == -1)
+            goto failed;
+        Py_DECREF(value);
+        break;
     case MatchMapping_kind:
         tp = (PyTypeObject *)state->MatchMapping_type;
         result = PyType_GenericNew(tp, NULL, NULL);

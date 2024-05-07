@@ -1046,6 +1046,9 @@ astfold_pattern(pattern_ty node_, PyArena *ctx_, _PyASTOptimizeState *state)
         case MatchSequence_kind:
             CALL_SEQ(astfold_pattern, pattern, node_->v.MatchSequence.patterns);
             break;
+        case MatchSet_kind:
+            CALL_SEQ(astfold_pattern, pattern, node_->v.MatchSet.patterns);
+            break;
         case MatchMapping_kind:
             CALL_SEQ(astfold_expr, expr, node_->v.MatchMapping.keys);
             CALL_SEQ(astfold_pattern, pattern, node_->v.MatchMapping.patterns);
