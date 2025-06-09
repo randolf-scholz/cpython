@@ -57,7 +57,7 @@ class Queue(object):
         return (self._ignore_epipe, self._maxsize, self._reader, self._writer,
                 self._rlock, self._wlock, self._sem, self._opid)
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         (self._ignore_epipe, self._maxsize, self._reader, self._writer,
          self._rlock, self._wlock, self._sem, self._opid) = state
         self._reset()
@@ -321,7 +321,7 @@ class JoinableQueue(Queue):
     def __getstate__(self):
         return Queue.__getstate__(self) + (self._cond, self._unfinished_tasks)
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         Queue.__setstate__(self, state[:-2])
         self._cond, self._unfinished_tasks = state[-2:]
 
@@ -376,7 +376,7 @@ class SimpleQueue(object):
         context.assert_spawning(self)
         return (self._reader, self._writer, self._rlock, self._wlock)
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         (self._reader, self._writer, self._rlock, self._wlock) = state
         self._poll = self._reader.poll
 

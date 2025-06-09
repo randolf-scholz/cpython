@@ -162,7 +162,7 @@ __all__ = [
 ]
 
 class _LazyAnnotationLib:
-    def __getattr__(self, attr):
+    def __getattr__(self, attr, /):
         global _lazy_annotationlib
         import annotationlib
         _lazy_annotationlib = annotationlib
@@ -518,13 +518,13 @@ class _SpecialForm(_Final, _NotIterable, _root=True):
         self._name = getitem.__name__
         self.__doc__ = getitem.__doc__
 
-    def __getattr__(self, item):
+    def __getattr__(self, item, /):
         if item in {'__name__', '__qualname__'}:
             return self._name
 
         raise AttributeError(item)
 
-    def __mro_entries__(self, bases):
+    def __mro_entries__(self, bases, /):
         raise TypeError(f"Cannot subclass {self!r}")
 
     def __repr__(self):
@@ -536,32 +536,32 @@ class _SpecialForm(_Final, _NotIterable, _root=True):
     def __call__(self, *args, **kwds):
         raise TypeError(f"Cannot instantiate {self!r}")
 
-    def __or__(self, other):
+    def __or__(self, other, /):
         return Union[self, other]
 
-    def __ror__(self, other):
+    def __ror__(self, other, /):
         return Union[other, self]
 
-    def __instancecheck__(self, obj):
+    def __instancecheck__(self, obj, /):
         raise TypeError(f"{self} cannot be used with isinstance()")
 
-    def __subclasscheck__(self, cls):
+    def __subclasscheck__(self, cls, /):
         raise TypeError(f"{self} cannot be used with issubclass()")
 
     @_tp_cache
-    def __getitem__(self, parameters):
+    def __getitem__(self, parameters, /):
         return self._getitem(self, parameters)
 
 
 class _TypedCacheSpecialForm(_SpecialForm, _root=True):
-    def __getitem__(self, parameters):
+    def __getitem__(self, parameters, /):
         if not isinstance(parameters, tuple):
             parameters = (parameters,)
         return self._getitem(self, *parameters)
 
 
 class _AnyMeta(type):
-    def __instancecheck__(self, obj):
+    def __instancecheck__(self, obj, /):
         if self is Any:
             raise TypeError("typing.Any cannot be used with isinstance()")
         return super().__instancecheck__(obj)
@@ -1208,7 +1208,7 @@ class _BaseGenericAlias(_Final, _root=True):
             pass
         return result
 
-    def __mro_entries__(self, bases):
+    def __mro_entries__(self, bases, /):
         res = []
         if self.__origin__ not in bases:
             res.append(self.__origin__)
@@ -1240,7 +1240,7 @@ class _BaseGenericAlias(_Final, _root=True):
             res.append(Generic)
         return tuple(res)
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr, /):
         if attr in {'__name__', '__qualname__'}:
             return self._name or self.__origin__.__name__
 
@@ -1250,16 +1250,16 @@ class _BaseGenericAlias(_Final, _root=True):
             return getattr(self.__origin__, attr)
         raise AttributeError(attr)
 
-    def __setattr__(self, attr, val):
+    def __setattr__(self, attr, val, /):
         if _is_dunder(attr) or attr in {'_name', '_inst', '_nparams', '_defaults'}:
             super().__setattr__(attr, val)
         else:
             setattr(self.__origin__, attr, val)
 
-    def __instancecheck__(self, obj):
+    def __instancecheck__(self, obj, /):
         return self.__subclasscheck__(type(obj))
 
-    def __subclasscheck__(self, cls):
+    def __subclasscheck__(self, cls, /):
         raise TypeError("Subscripted generics cannot be used with"
                         " class and instance checks")
 
@@ -1319,7 +1319,7 @@ class _GenericAlias(_BaseGenericAlias, _root=True):
         if not name:
             self.__module__ = origin.__module__
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, _GenericAlias):
             return NotImplemented
         return (self.__origin__ == other.__origin__
@@ -1328,14 +1328,14 @@ class _GenericAlias(_BaseGenericAlias, _root=True):
     def __hash__(self):
         return hash((self.__origin__, self.__args__))
 
-    def __or__(self, right):
+    def __or__(self, right, /):
         return Union[self, right]
 
-    def __ror__(self, left):
+    def __ror__(self, left, /):
         return Union[left, self]
 
     @_tp_cache
-    def __getitem__(self, args):
+    def __getitem__(self, args, /):
         # Parameterizes an already-parameterized object.
         #
         # For example, we arrive here doing something like:
@@ -1481,7 +1481,7 @@ class _GenericAlias(_BaseGenericAlias, _root=True):
             args, = args
         return operator.getitem, (origin, args)
 
-    def __mro_entries__(self, bases):
+    def __mro_entries__(self, bases, /):
         if isinstance(self.__origin__, _SpecialForm):
             raise TypeError(f"Cannot subclass {self!r}")
 
@@ -1517,7 +1517,7 @@ class _SpecialGenericAlias(_NotIterable, _BaseGenericAlias, _root=True):
             self.__doc__ = f'A generic version of {origin.__module__}.{origin.__qualname__}.'
 
     @_tp_cache
-    def __getitem__(self, params):
+    def __getitem__(self, params, /):
         if not isinstance(params, tuple):
             params = (params,)
         msg = "Parameters to generic types must be types."
@@ -1547,7 +1547,7 @@ class _SpecialGenericAlias(_NotIterable, _BaseGenericAlias, _root=True):
     def __repr__(self):
         return 'typing.' + self._name
 
-    def __subclasscheck__(self, cls):
+    def __subclasscheck__(self, cls, /):
         if isinstance(cls, _SpecialGenericAlias):
             return issubclass(cls.__origin__, self.__origin__)
         if not isinstance(cls, _GenericAlias):
@@ -1557,10 +1557,10 @@ class _SpecialGenericAlias(_NotIterable, _BaseGenericAlias, _root=True):
     def __reduce__(self):
         return self._name
 
-    def __or__(self, right):
+    def __or__(self, right, /):
         return Union[self, right]
 
-    def __ror__(self, left):
+    def __ror__(self, left, /):
         return Union[left, self]
 
 
@@ -1586,7 +1586,7 @@ class _CallableType(_SpecialGenericAlias, _root=True):
         return _CallableGenericAlias(self.__origin__, params,
                                      name=self._name, inst=self._inst)
 
-    def __getitem__(self, params):
+    def __getitem__(self, params, /):
         if not isinstance(params, tuple) or len(params) != 2:
             raise TypeError("Callable must be used as "
                             "Callable[[arg, ...], result].")
@@ -1601,7 +1601,7 @@ class _CallableType(_SpecialGenericAlias, _root=True):
         return self.__getitem_inner__(params)
 
     @_tp_cache
-    def __getitem_inner__(self, params):
+    def __getitem_inner__(self, params, /):
         args, result = params
         msg = "Callable[args, result]: result must be a type."
         result = _type_check(result, msg)
@@ -1616,7 +1616,7 @@ class _CallableType(_SpecialGenericAlias, _root=True):
 
 class _TupleType(_SpecialGenericAlias, _root=True):
     @_tp_cache
-    def __getitem__(self, params):
+    def __getitem__(self, params, /):
         if not isinstance(params, tuple):
             params = (params,)
         if len(params) >= 2 and params[-1] is ...:
@@ -1629,17 +1629,17 @@ class _TupleType(_SpecialGenericAlias, _root=True):
 
 
 class _UnionGenericAliasMeta(type):
-    def __instancecheck__(self, inst: object) -> bool:
+    def __instancecheck__(self, inst: object, /) -> bool:
         import warnings
         warnings._deprecated("_UnionGenericAlias", remove=(3, 17))
         return isinstance(inst, Union)
 
-    def __subclasscheck__(self, inst: type) -> bool:
+    def __subclasscheck__(self, inst: type, /) -> bool:
         import warnings
         warnings._deprecated("_UnionGenericAlias", remove=(3, 17))
         return issubclass(inst, Union)
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         import warnings
         warnings._deprecated("_UnionGenericAlias", remove=(3, 17))
         if other is _UnionGenericAlias or other is Union:
@@ -1670,7 +1670,7 @@ def _value_and_type_iter(parameters):
 
 
 class _LiteralGenericAlias(_GenericAlias, _root=True):
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, _LiteralGenericAlias):
             return NotImplemented
 
@@ -1746,7 +1746,7 @@ class _UnpackGenericAlias(_GenericAlias, _root=True):
         # a single item.
         return f'typing.Unpack[{_type_repr(self.__args__[0])}]'
 
-    def __getitem__(self, args):
+    def __getitem__(self, args, /):
         if self.__typing_is_unpacked_typevartuple__:
             return args
         return super().__getitem__(args)
@@ -1950,7 +1950,7 @@ class _ProtocolMeta(ABCMeta):
         if getattr(cls, "_is_protocol", False):
             cls.__protocol_attrs__ = _get_protocol_attrs(cls)
 
-    def __subclasscheck__(cls, other):
+    def __subclasscheck__(cls, other, /):
         if cls is Protocol:
             return type.__subclasscheck__(cls, other)
         if (
@@ -1976,7 +1976,7 @@ class _ProtocolMeta(ABCMeta):
                 )
         return _abc_subclasscheck(cls, other)
 
-    def __instancecheck__(cls, instance):
+    def __instancecheck__(cls, instance, /):
         # We need this method for situations where attributes are
         # assigned in __init__.
         if cls is Protocol:
@@ -2127,7 +2127,7 @@ class _AnnotatedAlias(_NotIterable, _GenericAlias, _root=True):
             Annotated, (self.__origin__,) + self.__metadata__
         )
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, _AnnotatedAlias):
             return NotImplemented
         return (self.__origin__ == other.__origin__
@@ -2136,12 +2136,12 @@ class _AnnotatedAlias(_NotIterable, _GenericAlias, _root=True):
     def __hash__(self):
         return hash((self.__origin__, self.__metadata__))
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr, /):
         if attr in {'__name__', '__qualname__'}:
             return 'Annotated'
         return super().__getattr__(attr)
 
-    def __mro_entries__(self, bases):
+    def __mro_entries__(self, bases, /):
         return (self.__origin__,)
 
 
@@ -2858,7 +2858,7 @@ class SupportsRound[T](Protocol):
     __slots__ = ()
 
     @abstractmethod
-    def __round__(self, ndigits: int = 0) -> T:
+    def __round__(self, /, ndigits: int=0) -> T:
         pass
 
 
@@ -3117,7 +3117,7 @@ class _TypedDictMeta(type):
             f" {required_keys=}, {optional_keys=}"
         )
 
-        def __annotate__(format):
+        def __annotate__(format, /):
             annos = {}
             for base in bases:
                 if base is Generic:
@@ -3155,7 +3155,7 @@ class _TypedDictMeta(type):
 
     __call__ = dict  # static method
 
-    def __subclasscheck__(cls, other):
+    def __subclasscheck__(cls, other, /):
         # Typed dicts are only for static structural subtyping.
         raise TypeError('TypedDict does not support instance and class checks')
 
@@ -3328,7 +3328,7 @@ class NewType:
         if def_mod != 'typing':
             self.__module__ = def_mod
 
-    def __mro_entries__(self, bases):
+    def __mro_entries__(self, bases, /):
         # We defined __mro_entries__ to get a better error message
         # if a user attempts to subclass a NewType instance. bpo-46170
         superclass_name = self.__name__
@@ -3349,10 +3349,10 @@ class NewType:
     def __reduce__(self):
         return self.__qualname__
 
-    def __or__(self, other):
+    def __or__(self, other, /):
         return Union[self, other]
 
-    def __ror__(self, other):
+    def __ror__(self, other, /):
         return Union[other, self]
 
 
@@ -3459,7 +3459,7 @@ class IO(Generic[AnyStr]):
         pass
 
     @abstractmethod
-    def __exit__(self, type, value, traceback) -> None:
+    def __exit__(self, type, value, traceback, /) -> None:
         pass
 
 
@@ -3698,7 +3698,7 @@ def get_protocol_members(tp: type, /) -> frozenset[str]:
     return frozenset(tp.__protocol_attrs__)
 
 
-def __getattr__(attr):
+def __getattr__(attr, /):
     """Improve the import time of the typing module.
 
     Soft-deprecated objects which are costly to create

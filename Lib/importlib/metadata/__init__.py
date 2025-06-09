@@ -228,13 +228,13 @@ class EntryPoint:
     def _key(self):
         return self.name, self.value, self.group
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         return self._key() < other._key()
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         return self._key() == other._key()
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name, value, /):
         raise AttributeError("EntryPoint objects are immutable.")
 
     def __repr__(self):
@@ -254,7 +254,7 @@ class EntryPoints(tuple):
 
     __slots__ = ()
 
-    def __getitem__(self, name: str) -> EntryPoint:  # type: ignore[override]
+    def __getitem__(self, name: str, /) -> EntryPoint:  # type: ignore[override]
         """
         Get the EntryPoint in self matching name.
         """

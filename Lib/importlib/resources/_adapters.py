@@ -13,7 +13,7 @@ class SpecLoaderAdapter:
         self.spec = spec
         self.loader = adapter(spec)
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         return getattr(self.spec, name)
 
 
@@ -153,7 +153,7 @@ class CompatibilityFiles:
         reader = self._reader
         return reader if hasattr(reader, 'files') else self
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr, /):
         return getattr(self._reader, attr)
 
     def files(self):

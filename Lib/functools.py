@@ -209,15 +209,15 @@ def cmp_to_key(mycmp):
         __slots__ = ['obj']
         def __init__(self, obj):
             self.obj = obj
-        def __lt__(self, other):
+        def __lt__(self, other, /):
             return mycmp(self.obj, other.obj) < 0
-        def __gt__(self, other):
+        def __gt__(self, other, /):
             return mycmp(self.obj, other.obj) > 0
-        def __eq__(self, other):
+        def __eq__(self, other, /):
             return mycmp(self.obj, other.obj) == 0
-        def __le__(self, other):
+        def __le__(self, other, /):
             return mycmp(self.obj, other.obj) <= 0
-        def __ge__(self, other):
+        def __ge__(self, other, /):
             return mycmp(self.obj, other.obj) >= 0
         __hash__ = None
     return K
@@ -392,7 +392,7 @@ class partial:
         keywords = {**self.keywords, **keywords}
         return self.func(*pto_args, *args, **keywords)
 
-    def __get__(self, obj, objtype=None):
+    def __get__(self, obj, /, objtype=None):
         if obj is None:
             return self
         return MethodType(self, obj)
@@ -401,7 +401,7 @@ class partial:
         return type(self), (self.func,), (self.func, self.args,
                self.keywords or None, self.__dict__ or None)
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         if not isinstance(state, tuple):
             raise TypeError("argument to __setstate__ must be a tuple")
         if len(state) != 4:
@@ -469,7 +469,7 @@ class partialmethod:
         _method.__partialmethod__ = self
         return _method
 
-    def __get__(self, obj, cls=None):
+    def __get__(self, obj, /, cls=None):
         get = getattr(self.func, "__get__", None)
         result = None
         if get is not None:
@@ -1013,7 +1013,7 @@ class singledispatchmethod:
         """
         return self.dispatcher.register(cls, func=method)
 
-    def __get__(self, obj, cls=None):
+    def __get__(self, obj, /, cls=None):
         return _singledispatchmethod_get(self, obj, cls)
 
     @property
@@ -1069,7 +1069,7 @@ class _singledispatchmethod_get:
                             '1 positional argument')
         return self._dispatch(args[0].__class__).__get__(self._obj, self._cls)(*args, **kwargs)
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         # Resolve these attributes lazily to speed up creation of
         # the _singledispatchmethod_get instance.
         if name not in {'__name__', '__qualname__', '__isabstractmethod__',
@@ -1099,7 +1099,7 @@ class cached_property:
         self.__doc__ = func.__doc__
         self.__module__ = func.__module__
 
-    def __set_name__(self, owner, name):
+    def __set_name__(self, owner, name, /):
         if self.attrname is None:
             self.attrname = name
         elif name != self.attrname:
@@ -1108,7 +1108,7 @@ class cached_property:
                 f"({self.attrname!r} and {name!r})."
             )
 
-    def __get__(self, instance, owner=None):
+    def __get__(self, instance, /, owner=None):
         if instance is None:
             return self
         if self.attrname is None:

@@ -556,7 +556,7 @@ class RPCProxy:
         self.sockio = sockio
         self.oid = oid
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         if self.__methods is None:
             self.__getmethods()
         if self.__methods.get(name):

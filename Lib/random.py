@@ -213,7 +213,7 @@ class Random(_random.Random):
     def __getstate__(self):  # for pickle
         return self.getstate()
 
-    def __setstate__(self, state):  # for pickle
+    def __setstate__(self, state, /):  # for pickle
         self.setstate(state)
 
     def __reduce__(self):

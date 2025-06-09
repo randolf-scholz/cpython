@@ -72,7 +72,7 @@ class Token(object):
     def __getstate__(self):
         return (self.typeid, self.address, self.id)
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         (self.typeid, self.address, self.id) = state
 
     def __repr__(self):
@@ -656,7 +656,7 @@ class BaseManager(object):
                     "Unknown state {!r}".format(self._state.value))
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb, /):
         self.shutdown()
 
     @staticmethod
@@ -921,7 +921,7 @@ class BaseProxy(object):
             return (RebuildProxy,
                     (type(self), self._token, self._serializer, kwds))
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self, memo, /):
         return self._getvalue()
 
     def __repr__(self):
@@ -1069,7 +1069,7 @@ class AcquirerProxy(BaseProxy):
         return self._callmethod('locked')
     def __enter__(self):
         return self._callmethod('acquire')
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb, /):
         return self._callmethod('release')
 
 
@@ -1133,17 +1133,17 @@ class BarrierProxy(BaseProxy):
 
 class NamespaceProxy(BaseProxy):
     _exposed_ = ('__getattribute__', '__setattr__', '__delattr__')
-    def __getattr__(self, key):
+    def __getattr__(self, key, /):
         if key[0] == '_':
             return object.__getattribute__(self, key)
         callmethod = object.__getattribute__(self, '_callmethod')
         return callmethod('__getattribute__', (key,))
-    def __setattr__(self, key, value):
+    def __setattr__(self, key, value, /):
         if key[0] == '_':
             return object.__setattr__(self, key, value)
         callmethod = object.__getattribute__(self, '_callmethod')
         return callmethod('__setattr__', (key, value))
-    def __delattr__(self, key):
+    def __delattr__(self, key, /):
         if key[0] == '_':
             return object.__delattr__(self, key)
         callmethod = object.__getattribute__(self, '_callmethod')
@@ -1168,10 +1168,10 @@ BaseListProxy = MakeProxyType('BaseListProxy', (
     'remove', 'reverse', 'sort',
     ))
 class ListProxy(BaseListProxy):
-    def __iadd__(self, value):
+    def __iadd__(self, value, /):
         self._callmethod('extend', (value,))
         return self
-    def __imul__(self, value):
+    def __imul__(self, value, /):
         self._callmethod('__imul__', (value,))
         return self
 
@@ -1189,7 +1189,7 @@ _BaseDictProxy._method_to_typeid_ = {
     '__iter__': 'Iterator',
     }
 class DictProxy(_BaseDictProxy):
-    def __ior__(self, value):
+    def __ior__(self, value, /):
         self._callmethod('__ior__', (value,))
         return self
 
@@ -1209,16 +1209,16 @@ _BaseSetProxy = MakeProxyType("_BaseSetProxy", (
 ))
 
 class SetProxy(_BaseSetProxy):
-    def __ior__(self, value):
+    def __ior__(self, value, /):
         self._callmethod('__ior__', (value,))
         return self
-    def __iand__(self, value):
+    def __iand__(self, value, /):
         self._callmethod('__iand__', (value,))
         return self
-    def __ixor__(self, value):
+    def __ixor__(self, value, /):
         self._callmethod('__ixor__', (value,))
         return self
-    def __isub__(self, value):
+    def __isub__(self, value, /):
         self._callmethod('__isub__', (value,))
         return self
 
@@ -1246,7 +1246,7 @@ BasePoolProxy._method_to_typeid_ = {
 class PoolProxy(BasePoolProxy):
     def __enter__(self):
         return self
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb, /):
         self.terminate()
 
 #
@@ -1324,7 +1324,7 @@ if HAS_SHMEM:
         def __getstate__(self):
             return (self.shared_memory_context_name, self.segment_names)
 
-        def __setstate__(self, state):
+        def __setstate__(self, state, /):
             self.__init__(*state)
 
 

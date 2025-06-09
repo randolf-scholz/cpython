@@ -871,7 +871,7 @@ class Fraction(numbers.Rational):
 
     __mod__, __rmod__ = _operator_fallbacks(_mod, operator.mod, False)
 
-    def __pow__(a, b, modulo=None):
+    def __pow__(a, b, /, modulo=None):
         """a ** b
 
         If b is not an integer, the result will be a float or complex
@@ -905,7 +905,7 @@ class Fraction(numbers.Rational):
         else:
             return NotImplemented
 
-    def __rpow__(b, a, modulo=None):
+    def __rpow__(b, a, /, modulo=None):
         """a ** b"""
         if modulo is not None:
             return NotImplemented
@@ -933,7 +933,7 @@ class Fraction(numbers.Rational):
         """abs(a)"""
         return Fraction._from_coprime_ints(abs(a._numerator), a._denominator)
 
-    def __int__(a, _index=operator.index):
+    def __int__(a, /, _index=operator.index):
         """int(a)"""
         if a._numerator < 0:
             return _index(-(-a._numerator // a._denominator))
@@ -956,7 +956,7 @@ class Fraction(numbers.Rational):
         # The negations cleverly convince floordiv to return the ceiling.
         return -(-a._numerator // a._denominator)
 
-    def __round__(self, ndigits=None):
+    def __round__(self, /, ndigits=None):
         """round(self, ndigits)
 
         Rounds half toward even.
@@ -986,7 +986,7 @@ class Fraction(numbers.Rational):
         """hash(self)"""
         return _hash_algorithm(self._numerator, self._denominator)
 
-    def __eq__(a, b):
+    def __eq__(a, b, /):
         """a == b"""
         if type(b) is int:
             return a._numerator == b and a._denominator == 1
@@ -1029,19 +1029,19 @@ class Fraction(numbers.Rational):
         else:
             return NotImplemented
 
-    def __lt__(a, b):
+    def __lt__(a, b, /):
         """a < b"""
         return a._richcmp(b, operator.lt)
 
-    def __gt__(a, b):
+    def __gt__(a, b, /):
         """a > b"""
         return a._richcmp(b, operator.gt)
 
-    def __le__(a, b):
+    def __le__(a, b, /):
         """a <= b"""
         return a._richcmp(b, operator.le)
 
-    def __ge__(a, b):
+    def __ge__(a, b, /):
         """a >= b"""
         return a._richcmp(b, operator.ge)
 
@@ -1061,7 +1061,7 @@ class Fraction(numbers.Rational):
             return self     # I'm immutable; therefore I am my own clone
         return self.__class__(self._numerator, self._denominator)
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self, memo, /):
         if type(self) == Fraction:
             return self     # My components are also immutable
         return self.__class__(self._numerator, self._denominator)

@@ -265,7 +265,7 @@ class _ConnectionBase:
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_value, exc_tb):
+    def __exit__(self, exc_type, exc_value, exc_tb, /):
         self.close()
 
 
@@ -520,7 +520,7 @@ class Listener(object):
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_value, exc_tb):
+    def __exit__(self, exc_type, exc_value, exc_tb, /):
         self.close()
 
 

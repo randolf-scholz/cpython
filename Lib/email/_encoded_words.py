@@ -74,7 +74,7 @@ class _QByteMap(dict):
 
     safe = b'-!*+/' + ascii_letters.encode('ascii') + digits.encode('ascii')
 
-    def __missing__(self, key):
+    def __missing__(self, key, /):
         if key in self.safe:
             self[key] = chr(key)
         else:

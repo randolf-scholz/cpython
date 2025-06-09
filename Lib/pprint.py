@@ -96,7 +96,7 @@ class _safe_key:
     def __init__(self, obj):
         self.obj = obj
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         try:
             return self.obj < other.obj
         except TypeError:

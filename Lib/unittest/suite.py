@@ -26,7 +26,7 @@ class BaseTestSuite(object):
     def __repr__(self):
         return "<%s tests=%s>" % (util.strclass(self.__class__), list(self))
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, self.__class__):
             return NotImplemented
         return list(self) == list(other)

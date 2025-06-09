@@ -281,14 +281,14 @@ class UUID:
             d['is_safe'] = self.is_safe.value
         return d
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         object.__setattr__(self, 'int', state['int'])
         # is_safe was added in 3.7; it is also omitted when it is "unknown"
         object.__setattr__(self, 'is_safe',
                            SafeUUID(state['is_safe'])
                            if 'is_safe' in state else SafeUUID.unknown)
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, UUID):
             return self.int == other.int
         return NotImplemented
@@ -296,22 +296,22 @@ class UUID:
     # Q. What's the value of being able to sort UUIDs?
     # A. Use them as keys in a B-Tree or similar mapping.
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if isinstance(other, UUID):
             return self.int < other.int
         return NotImplemented
 
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         if isinstance(other, UUID):
             return self.int > other.int
         return NotImplemented
 
-    def __le__(self, other):
+    def __le__(self, other, /):
         if isinstance(other, UUID):
             return self.int <= other.int
         return NotImplemented
 
-    def __ge__(self, other):
+    def __ge__(self, other, /):
         if isinstance(other, UUID):
             return self.int >= other.int
         return NotImplemented
@@ -325,7 +325,7 @@ class UUID:
     def __repr__(self):
         return '%s(%r)' % (self.__class__.__name__, str(self))
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name, value, /):
         raise TypeError('UUID objects are immutable')
 
     def __str__(self):

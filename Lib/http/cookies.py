@@ -290,7 +290,7 @@ class Morsel(dict):
     def coded_value(self):
         return self._coded_value
 
-    def __setitem__(self, K, V):
+    def __setitem__(self, K, V, /):
         K = K.lower()
         if not K in self._reserved:
             raise CookieError("Invalid attribute %r" % (K,))
@@ -302,7 +302,7 @@ class Morsel(dict):
             raise CookieError("Invalid attribute %r" % (key,))
         return dict.setdefault(self, key, val)
 
-    def __eq__(self, morsel):
+    def __eq__(self, morsel, /):
         if not isinstance(morsel, Morsel):
             return NotImplemented
         return (dict.__eq__(self, morsel) and
@@ -348,7 +348,7 @@ class Morsel(dict):
             'coded_value': self._coded_value,
         }
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         self._key = state['key']
         self._value = state['value']
         self._coded_value = state['coded_value']
@@ -474,7 +474,7 @@ class BaseCookie(dict):
         M.set(key, real_value, coded_value)
         dict.__setitem__(self, key, M)
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value, /):
         """Dictionary style assignment."""
         if isinstance(value, Morsel):
             # allow assignment of constructed Morsels (e.g. for pickling)

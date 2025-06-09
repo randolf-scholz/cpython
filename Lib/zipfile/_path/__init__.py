@@ -93,7 +93,7 @@ class InitializedState:
     def __getstate__(self):
         return self._saved___init__.args, self._saved___init__.kwargs
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         args, kwargs = state
         super().__init__(*args, **kwargs)
 
@@ -322,7 +322,7 @@ class Path:
         self.root = FastLookup.make(root)
         self.at = at
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         """
         >>> Path(zipfile.ZipFile(io.BytesIO(), 'w')) == 'foo'
         False

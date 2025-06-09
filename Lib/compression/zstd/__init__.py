@@ -54,7 +54,7 @@ class FrameInfo:
         return (f'FrameInfo(decompressed_size={self.decompressed_size}, '
                 f'dictionary_id={self.dictionary_id})')
 
-    def __setattr__(self, name, _):
+    def __setattr__(self, name, _, /):
         raise AttributeError(f"can't set attribute {name!r}")
 
 

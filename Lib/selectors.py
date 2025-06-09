@@ -70,7 +70,7 @@ class _SelectorMapping(Mapping):
         fd = self._selector._fileobj_lookup(fileobj)
         return self._selector._fd_to_key.get(fd, default)
 
-    def __getitem__(self, fileobj):
+    def __getitem__(self, fileobj, /):
         fd = self._selector._fileobj_lookup(fileobj)
         key = self._selector._fd_to_key.get(fd)
         if key is None:

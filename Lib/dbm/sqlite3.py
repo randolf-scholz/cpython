@@ -86,17 +86,17 @@ class _Database(MutableMapping):
             row = cu.fetchone()
         return row[0]
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         with self._execute(LOOKUP_KEY, (key,)) as cu:
             row = cu.fetchone()
         if not row:
             raise KeyError(key)
         return row[0]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value, /):
         self._execute(STORE_KV, (key, value))
 
-    def __delitem__(self, key):
+    def __delitem__(self, key, /):
         with self._execute(DELETE_KEY, (key,)) as cu:
             if not cu.rowcount:
                 raise KeyError(key)

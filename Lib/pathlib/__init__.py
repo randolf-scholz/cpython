@@ -61,7 +61,7 @@ class _PathParents(Sequence):
     def __len__(self):
         return len(self._tail)
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx, /):
         if isinstance(idx, slice):
             return tuple(self[i] for i in range(*idx.indices(len(self))))
 
@@ -170,13 +170,13 @@ class PurePath:
         """
         return self.with_segments(self, *pathsegments)
 
-    def __truediv__(self, key):
+    def __truediv__(self, key, /):
         try:
             return self.with_segments(self, key)
         except TypeError:
             return NotImplemented
 
-    def __rtruediv__(self, key):
+    def __rtruediv__(self, key, /):
         try:
             return self.with_segments(key, self)
         except TypeError:
@@ -215,7 +215,7 @@ class PurePath:
             self._hash = hash(self._str_normcase)
             return self._hash
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, PurePath):
             return NotImplemented
         return self._str_normcase == other._str_normcase and self.parser is other.parser
@@ -229,22 +229,22 @@ class PurePath:
             self._parts_normcase_cached = self._str_normcase.split(self.parser.sep)
             return self._parts_normcase_cached
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if not isinstance(other, PurePath) or self.parser is not other.parser:
             return NotImplemented
         return self._parts_normcase < other._parts_normcase
 
-    def __le__(self, other):
+    def __le__(self, other, /):
         if not isinstance(other, PurePath) or self.parser is not other.parser:
             return NotImplemented
         return self._parts_normcase <= other._parts_normcase
 
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         if not isinstance(other, PurePath) or self.parser is not other.parser:
             return NotImplemented
         return self._parts_normcase > other._parts_normcase
 
-    def __ge__(self, other):
+    def __ge__(self, other, /):
         if not isinstance(other, PurePath) or self.parser is not other.parser:
             return NotImplemented
         return self._parts_normcase >= other._parts_normcase

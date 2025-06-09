@@ -592,7 +592,7 @@ class _UnixReadPipeTransport(transports.ReadTransport):
         if not self._closing:
             self._close(None)
 
-    def __del__(self, _warn=warnings.warn):
+    def __del__(self, /, _warn=warnings.warn):
         if self._pipe is not None:
             _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
             self._pipe.close()
@@ -791,7 +791,7 @@ class _UnixWritePipeTransport(transports._FlowControlMixin,
             # write_eof is all what we needed to close the write pipe
             self.write_eof()
 
-    def __del__(self, _warn=warnings.warn):
+    def __del__(self, /, _warn=warnings.warn):
         if self._pipe is not None:
             _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
             self._pipe.close()
@@ -908,7 +908,7 @@ class _ThreadedChildWatcher:
         self._pid_counter = itertools.count(0)
         self._threads = {}
 
-    def __del__(self, _warn=warnings.warn):
+    def __del__(self, /, _warn=warnings.warn):
         threads = [thread for thread in list(self._threads.values())
                    if thread.is_alive()]
         if threads:

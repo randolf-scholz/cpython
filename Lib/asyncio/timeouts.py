@@ -93,10 +93,7 @@ class Timeout:
         return self
 
     async def __aexit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_val: BaseException | None,
-        exc_tb: TracebackType | None,
+        self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None, /,
     ) -> bool | None:
         assert self._state in (_State.ENTERED, _State.EXPIRING)
 

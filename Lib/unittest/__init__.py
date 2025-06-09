@@ -72,7 +72,7 @@ from .signals import installHandler, registerResult, removeResult, removeHandler
 def __dir__():
     return globals().keys() | {'IsolatedAsyncioTestCase'}
 
-def __getattr__(name):
+def __getattr__(name, /):
     if name == 'IsolatedAsyncioTestCase':
         global IsolatedAsyncioTestCase
         from .async_case import IsolatedAsyncioTestCase

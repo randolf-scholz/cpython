@@ -11,9 +11,9 @@ _T = TypeVar("_T")
 class PackageMetadata(Protocol):
     def __len__(self) -> int: ...  # pragma: no cover
 
-    def __contains__(self, item: str) -> bool: ...  # pragma: no cover
+    def __contains__(self, item: str, /) -> bool: ...  # pragma: no cover
 
-    def __getitem__(self, key: str) -> str: ...  # pragma: no cover
+    def __getitem__(self, key: str, /) -> str: ...  # pragma: no cover
 
     def __iter__(self) -> Iterator[str]: ...  # pragma: no cover
 
@@ -54,7 +54,7 @@ class SimplePath(Protocol):
     ) -> SimplePath: ...  # pragma: no cover
 
     def __truediv__(
-        self, other: Union[str, os.PathLike[str]]
+        self, other: Union[str, os.PathLike[str]], /
     ) -> SimplePath: ...  # pragma: no cover
 
     @property

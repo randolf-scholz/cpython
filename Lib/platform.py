@@ -911,7 +911,7 @@ class uname_result(
             raise TypeError(msg)
         return result
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         return tuple(self)[key]
 
     def __len__(self):

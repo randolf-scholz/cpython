@@ -297,31 +297,31 @@ class DateTime:
             o = NotImplemented
         return s, o
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         s, o = self.make_comparable(other)
         if o is NotImplemented:
             return NotImplemented
         return s < o
 
-    def __le__(self, other):
+    def __le__(self, other, /):
         s, o = self.make_comparable(other)
         if o is NotImplemented:
             return NotImplemented
         return s <= o
 
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         s, o = self.make_comparable(other)
         if o is NotImplemented:
             return NotImplemented
         return s > o
 
-    def __ge__(self, other):
+    def __ge__(self, other, /):
         s, o = self.make_comparable(other)
         if o is NotImplemented:
             return NotImplemented
         return s >= o
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         s, o = self.make_comparable(other)
         if o is NotImplemented:
             return NotImplemented
@@ -385,7 +385,7 @@ class Binary:
     def __str__(self):
         return str(self.data, "latin-1")  # XXX encoding?!
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, Binary):
             other = other.data
         return self.data == other
@@ -810,7 +810,7 @@ class _MultiCallMethod:
     def __init__(self, call_list, name):
         self.__call_list = call_list
         self.__name = name
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         return _MultiCallMethod(self.__call_list, "%s.%s" % (self.__name, name))
     def __call__(self, *args):
         self.__call_list.append((self.__name, args))
@@ -822,7 +822,7 @@ class MultiCallIterator:
     def __init__(self, results):
         self.results = results
 
-    def __getitem__(self, i):
+    def __getitem__(self, i, /):
         item = self.results[i]
         if isinstance(item, dict):
             raise Fault(item['faultCode'], item['faultString'])
@@ -855,7 +855,7 @@ class MultiCall:
     def __repr__(self):
         return "<%s at %#x>" % (self.__class__.__name__, id(self))
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         return _MultiCallMethod(self.__call_list, name)
 
     def __call__(self):
@@ -1090,7 +1090,7 @@ class _Method:
     def __init__(self, send, name):
         self.__send = send
         self.__name = name
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         return _Method(self.__send, "%s.%s" % (self.__name, name))
     def __call__(self, *args):
         return self.__send(self.__name, args)
@@ -1450,7 +1450,7 @@ class ServerProxy:
             (self.__class__.__name__, self.__host, self.__handler)
             )
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         # magic method dispatcher
         return _Method(self.__request, name)
 

@@ -21,7 +21,7 @@ def _other_endian(typ):
     raise TypeError("This type does not support other endian: %s" % typ)
 
 class _swapped_meta:
-    def __setattr__(self, attrname, value):
+    def __setattr__(self, attrname, value, /):
         if attrname == "_fields_":
             fields = []
             for desc in value:

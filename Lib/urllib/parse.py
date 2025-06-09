@@ -891,7 +891,7 @@ class _Quoter(dict):
     def __repr__(self):
         return f"<Quoter {dict(self)!r}>"
 
-    def __missing__(self, b):
+    def __missing__(self, b, /):
         # Handle a cache miss. Store quoted string in cache and return.
         res = chr(b) if b in self.safe else '%{:02X}'.format(b)
         self[b] = res

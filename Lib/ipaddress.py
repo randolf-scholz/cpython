@@ -569,14 +569,14 @@ class _BaseAddress(_IPAddressBase):
     def __int__(self):
         return self._ip
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         try:
             return (self._ip == other._ip
                     and self.version == other.version)
         except AttributeError:
             return NotImplemented
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if not isinstance(other, _BaseAddress):
             return NotImplemented
         if self.version != other.version:
@@ -588,12 +588,12 @@ class _BaseAddress(_IPAddressBase):
 
     # Shorthand for Integer addition and subtraction. This is not
     # meant to ever support addition/subtraction of addresses.
-    def __add__(self, other):
+    def __add__(self, other, /):
         if not isinstance(other, int):
             return NotImplemented
         return self.__class__(int(self) + other)
 
-    def __sub__(self, other):
+    def __sub__(self, other, /):
         if not isinstance(other, int):
             return NotImplemented
         return self.__class__(int(self) - other)
@@ -613,7 +613,7 @@ class _BaseAddress(_IPAddressBase):
     def __reduce__(self):
         return self.__class__, (self._ip,)
 
-    def __format__(self, fmt):
+    def __format__(self, fmt, /):
         """Returns an IP address as a formatted string.
 
         Supported presentation types are:
@@ -695,7 +695,7 @@ class _BaseNetwork(_IPAddressBase):
         for x in range(network, broadcast + 1):
             yield self._address_class(x)
 
-    def __getitem__(self, n):
+    def __getitem__(self, n, /):
         network = int(self.network_address)
         broadcast = int(self.broadcast_address)
         if n >= 0:
@@ -708,7 +708,7 @@ class _BaseNetwork(_IPAddressBase):
                 raise IndexError('address out of range')
             return self._address_class(broadcast + n)
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if not isinstance(other, _BaseNetwork):
             return NotImplemented
         if self.version != other.version:
@@ -720,7 +720,7 @@ class _BaseNetwork(_IPAddressBase):
             return self.netmask < other.netmask
         return False
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         try:
             return (self.version == other.version and
                     self.network_address == other.network_address and
@@ -731,7 +731,7 @@ class _BaseNetwork(_IPAddressBase):
     def __hash__(self):
         return hash((int(self.network_address), int(self.netmask)))
 
-    def __contains__(self, other):
+    def __contains__(self, other, /):
         # always false if one is v4 and the other is v6.
         if self.version != other.version:
             return False
@@ -1431,7 +1431,7 @@ class IPv4Interface(IPv4Address):
         return '%s/%d' % (self._string_from_ip_int(self._ip),
                           self._prefixlen)
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         address_equal = IPv4Address.__eq__(self, other)
         if address_equal is NotImplemented or not address_equal:
             return address_equal
@@ -1443,7 +1443,7 @@ class IPv4Interface(IPv4Address):
             # takes the extra info into account.
             return False
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         address_less = IPv4Address.__lt__(self, other)
         if address_less is NotImplemented:
             return NotImplemented
@@ -2001,7 +2001,7 @@ class IPv6Address(_BaseV6, _BaseAddress):
     def __hash__(self):
         return hash((self._ip, self._scope_id))
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         address_equal = super().__eq__(other)
         if address_equal is NotImplemented:
             return NotImplemented
@@ -2217,7 +2217,7 @@ class IPv6Interface(IPv6Address):
         return '%s/%d' % (super().__str__(),
                           self._prefixlen)
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         address_equal = IPv6Address.__eq__(self, other)
         if address_equal is NotImplemented or not address_equal:
             return address_equal
@@ -2229,7 +2229,7 @@ class IPv6Interface(IPv6Address):
             # takes the extra info into account.
             return False
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         address_less = IPv6Address.__lt__(self, other)
         if address_less is NotImplemented:
             return address_less

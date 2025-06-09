@@ -701,7 +701,7 @@ class _Environ(MutableMapping):
         self.decodevalue = decodevalue
         self._data = data
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         try:
             value = self._data[self.encodekey(key)]
         except KeyError:
@@ -709,13 +709,13 @@ class _Environ(MutableMapping):
             raise KeyError(key) from None
         return self.decodevalue(value)
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value, /):
         key = self.encodekey(key)
         value = self.encodevalue(value)
         putenv(key, value)
         self._data[key] = value
 
-    def __delitem__(self, key):
+    def __delitem__(self, key, /):
         encodedkey = self.encodekey(key)
         unsetenv(encodedkey)
         try:
@@ -748,18 +748,18 @@ class _Environ(MutableMapping):
             self[key] = value
         return self[key]
 
-    def __ior__(self, other):
+    def __ior__(self, other, /):
         self.update(other)
         return self
 
-    def __or__(self, other):
+    def __or__(self, other, /):
         if not isinstance(other, Mapping):
             return NotImplemented
         new = dict(self)
         new.update(other)
         return new
 
-    def __ror__(self, other):
+    def __ror__(self, other, /):
         if not isinstance(other, Mapping):
             return NotImplemented
         new = dict(other)
@@ -1058,7 +1058,7 @@ if sys.platform != 'vxworks':
             return self
         def __exit__(self, *args):
             self.close()
-        def __getattr__(self, name):
+        def __getattr__(self, name, /):
             return getattr(self._stream, name)
         def __iter__(self):
             return iter(self._stream)
@@ -1131,7 +1131,7 @@ class PathLike(abc.ABC):
         raise NotImplementedError
 
     @classmethod
-    def __subclasshook__(cls, subclass):
+    def __subclasshook__(cls, subclass, /):
         if cls is PathLike:
             return _check_methods(subclass, '__fspath__')
         return NotImplemented

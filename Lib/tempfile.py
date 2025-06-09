@@ -507,7 +507,7 @@ class _TemporaryFileWrapper:
         file = self.__dict__['file']
         return f"<{type(self).__name__} {file=}>"
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         # Attribute lookups are delegated to the underlying file
         # and cached for non-numeric results
         # (i.e. methods are cached, closed and friends are not)
@@ -534,7 +534,7 @@ class _TemporaryFileWrapper:
 
     # Need to trap __exit__ as well to ensure the file gets
     # deleted when used in a with statement
-    def __exit__(self, exc, value, tb):
+    def __exit__(self, exc, value, tb, /):
         result = self.file.__exit__(exc, value, tb)
         self._closer.cleanup()
         return result
@@ -761,7 +761,7 @@ class SpooledTemporaryFile(_io.IOBase):
             raise ValueError("Cannot enter context with closed file")
         return self
 
-    def __exit__(self, exc, value, tb):
+    def __exit__(self, exc, value, tb, /):
         self._file.close()
 
     # file protocol
@@ -966,7 +966,7 @@ class TemporaryDirectory:
     def __enter__(self):
         return self.name
 
-    def __exit__(self, exc, value, tb):
+    def __exit__(self, exc, value, tb, /):
         if self._delete:
             self.cleanup()
 

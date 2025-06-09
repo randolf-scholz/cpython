@@ -554,7 +554,7 @@ class Variable:
         return [self._tk.splitlist(x) for x in self._tk.splitlist(
             self._tk.call("trace", "vinfo", self._name))]
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, Variable):
             return NotImplemented
         return (self._name == other._name
@@ -1843,7 +1843,7 @@ class Misc:
 
     __getitem__ = cget
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value, /):
         self.configure({key: value})
 
     def keys(self):
@@ -2555,7 +2555,7 @@ class Tk(Misc, Wm):
         sys.last_traceback = tb
         traceback.print_exception(exc, val, tb)
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr, /):
         "Delegate attribute access to the interpreter object"
         return getattr(self.tk, attr)
 
@@ -4217,7 +4217,7 @@ class OptionMenu(Menubutton):
                      command=_setit(variable, v, callback))
         self["menu"] = menu
 
-    def __getitem__(self, name):
+    def __getitem__(self, name, /):
         if name == 'menu':
             return self.__menu
         return Widget.__getitem__(self, name)
@@ -4258,10 +4258,10 @@ class Image:
                 # May happen if the root was destroyed
                 pass
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value, /):
         self.tk.call(self.name, 'configure', '-'+key, value)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         return self.tk.call(self.name, 'configure', '-'+key)
 
     def configure(self, **kw):
@@ -4309,7 +4309,7 @@ class PhotoImage(Image):
         return self.tk.call(self.name, 'cget', '-' + option)
     # XXX config
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         return self.tk.call(self.name, 'cget', '-' + key)
 
     def copy(self, *, from_coords=None, zoom=None, subsample=None):

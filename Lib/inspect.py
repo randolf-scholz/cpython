@@ -2716,7 +2716,7 @@ class Parameter:
                 {'_default': self._default,
                  '_annotation': self._annotation})
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         self._default = state['_default']
         self._annotation = state['_annotation']
 
@@ -2788,7 +2788,7 @@ class Parameter:
     def __hash__(self):
         return hash((self._name, self._kind, self._annotation, self._default))
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if self is other:
             return True
         if not isinstance(other, Parameter):
@@ -2907,7 +2907,7 @@ class BoundArguments:
                 new_arguments.append((name, val))
         self.arguments = dict(new_arguments)
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if self is other:
             return True
         if not isinstance(other, BoundArguments):
@@ -2915,7 +2915,7 @@ class BoundArguments:
         return (self.signature == other.signature and
                 self.arguments == other.arguments)
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         self._signature = state['_signature']
         self.arguments = state['arguments']
 
@@ -3068,7 +3068,7 @@ class Signature:
         kwo_params = frozenset(kwo_params.values())
         return hash((params, kwo_params, return_annotation))
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if self is other:
             return True
         if not isinstance(other, Signature):
@@ -3236,7 +3236,7 @@ class Signature:
                 (tuple(self._parameters.values()),),
                 {'_return_annotation': self._return_annotation})
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         self._return_annotation = state['_return_annotation']
 
     def __repr__(self):

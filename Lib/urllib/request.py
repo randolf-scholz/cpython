@@ -580,7 +580,7 @@ class BaseHandler:
         # Only exists for backwards compatibility
         pass
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if not hasattr(other, "handler_order"):
             # Try to preserve the old behavior of having custom classes
             # inserted after default ones (works only for custom user

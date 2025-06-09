@@ -524,7 +524,7 @@ class AddressList(AddrlistClass):
     def __len__(self):
         return len(self.addresslist)
 
-    def __add__(self, other):
+    def __add__(self, other, /):
         # Set union
         newaddr = AddressList(None)
         newaddr.addresslist = self.addresslist[:]
@@ -533,14 +533,14 @@ class AddressList(AddrlistClass):
                 newaddr.addresslist.append(x)
         return newaddr
 
-    def __iadd__(self, other):
+    def __iadd__(self, other, /):
         # Set union, in-place
         for x in other.addresslist:
             if not x in self.addresslist:
                 self.addresslist.append(x)
         return self
 
-    def __sub__(self, other):
+    def __sub__(self, other, /):
         # Set difference
         newaddr = AddressList(None)
         for x in self.addresslist:
@@ -548,13 +548,13 @@ class AddressList(AddrlistClass):
                 newaddr.addresslist.append(x)
         return newaddr
 
-    def __isub__(self, other):
+    def __isub__(self, other, /):
         # Set difference, in-place
         for x in other.addresslist:
             if x in self.addresslist:
                 self.addresslist.remove(x)
         return self
 
-    def __getitem__(self, index):
+    def __getitem__(self, index, /):
         # Make indexing, slices, and 'in' work
         return self.addresslist[index]

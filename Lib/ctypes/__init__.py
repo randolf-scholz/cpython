@@ -303,7 +303,7 @@ def pointer(obj):
     return typ(obj)
 
 class _PointerTypeCache:
-    def __setitem__(self, cls, pointer_type):
+    def __setitem__(self, cls, pointer_type, /):
         import warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
         try:
@@ -311,7 +311,7 @@ class _PointerTypeCache:
         except AttributeError:
             _pointer_type_cache_fallback[cls] = pointer_type
 
-    def __getitem__(self, cls):
+    def __getitem__(self, cls, /):
         import warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
         try:
@@ -327,7 +327,7 @@ class _PointerTypeCache:
         except AttributeError:
             return _pointer_type_cache_fallback.get(cls, default)
 
-    def __contains__(self, cls):
+    def __contains__(self, cls, /):
         return hasattr(cls, '__pointer_type__')
 
 _pointer_type_cache_fallback = {}
@@ -463,14 +463,14 @@ class CDLL(object):
                 (self._handle & (_sys.maxsize*2 + 1)),
                 id(self) & (_sys.maxsize*2 + 1))
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         if name.startswith('__') and name.endswith('__'):
             raise AttributeError(name)
         func = self.__getitem__(name)
         setattr(self, name, func)
         return func
 
-    def __getitem__(self, name_or_ordinal):
+    def __getitem__(self, name_or_ordinal, /):
         func = self._FuncPtr((name_or_ordinal, self))
         if not isinstance(name_or_ordinal, int):
             func.__name__ = name_or_ordinal
@@ -520,7 +520,7 @@ class LibraryLoader(object):
     def __init__(self, dlltype):
         self._dlltype = dlltype
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         if name[0] == '_':
             raise AttributeError(name)
         try:
@@ -530,7 +530,7 @@ class LibraryLoader(object):
         setattr(self, name, dll)
         return dll
 
-    def __getitem__(self, name):
+    def __getitem__(self, name, /):
         return getattr(self, name)
 
     def LoadLibrary(self, name):

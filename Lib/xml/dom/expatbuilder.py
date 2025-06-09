@@ -68,7 +68,7 @@ class ElementInfo(object):
     def __getstate__(self):
         return self._attr_info, self._model, self.tagName
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         self._attr_info, self._model, self.tagName = state
 
     def getAttributeType(self, aname):

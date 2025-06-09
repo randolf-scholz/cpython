@@ -107,7 +107,7 @@ class PipeHandle:
             CloseHandle(self._handle)
             self._handle = None
 
-    def __del__(self, _warn=warnings.warn):
+    def __del__(self, /, _warn=warnings.warn):
         if self._handle is not None:
             _warn(f"unclosed {self!r}", ResourceWarning, source=self)
             self.close()
@@ -115,7 +115,7 @@ class PipeHandle:
     def __enter__(self):
         return self
 
-    def __exit__(self, t, v, tb):
+    def __exit__(self, t, v, tb, /):
         self.close()
 
 

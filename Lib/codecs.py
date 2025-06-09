@@ -404,8 +404,7 @@ class StreamWriter(Codec):
         if whence == 0 and offset == 0:
             self.reset()
 
-    def __getattr__(self, name,
-                    getattr=getattr):
+    def __getattr__(self, name, /, getattr=getattr):
 
         """ Inherit all other methods from the underlying stream.
         """
@@ -414,10 +413,10 @@ class StreamWriter(Codec):
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, tb):
+    def __exit__(self, type, value, tb, /):
         self.stream.close()
 
-    def __reduce_ex__(self, proto):
+    def __reduce_ex__(self, proto, /):
         raise TypeError("can't serialize %s" % self.__class__.__name__)
 
 ###
@@ -656,8 +655,7 @@ class StreamReader(Codec):
     def __iter__(self):
         return self
 
-    def __getattr__(self, name,
-                    getattr=getattr):
+    def __getattr__(self, name, /, getattr=getattr):
 
         """ Inherit all other methods from the underlying stream.
         """
@@ -666,10 +664,10 @@ class StreamReader(Codec):
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, tb):
+    def __exit__(self, type, value, tb, /):
         self.stream.close()
 
-    def __reduce_ex__(self, proto):
+    def __reduce_ex__(self, proto, /):
         raise TypeError("can't serialize %s" % self.__class__.__name__)
 
 ###
@@ -744,8 +742,7 @@ class StreamReaderWriter:
         if whence == 0 and offset == 0:
             self.writer.reset()
 
-    def __getattr__(self, name,
-                    getattr=getattr):
+    def __getattr__(self, name, /, getattr=getattr):
 
         """ Inherit all other methods from the underlying stream.
         """
@@ -756,10 +753,10 @@ class StreamReaderWriter:
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, tb):
+    def __exit__(self, type, value, tb, /):
         self.stream.close()
 
-    def __reduce_ex__(self, proto):
+    def __reduce_ex__(self, proto, /):
         raise TypeError("can't serialize %s" % self.__class__.__name__)
 
 ###
@@ -865,8 +862,7 @@ class StreamRecoder:
         self.reader.seek(offset, whence)
         self.writer.seek(offset, whence)
 
-    def __getattr__(self, name,
-                    getattr=getattr):
+    def __getattr__(self, name, /, getattr=getattr):
 
         """ Inherit all other methods from the underlying stream.
         """
@@ -875,10 +871,10 @@ class StreamRecoder:
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, tb):
+    def __exit__(self, type, value, tb, /):
         self.stream.close()
 
-    def __reduce_ex__(self, proto):
+    def __reduce_ex__(self, proto, /):
         raise TypeError("can't serialize %s" % self.__class__.__name__)
 
 ### Shortcuts

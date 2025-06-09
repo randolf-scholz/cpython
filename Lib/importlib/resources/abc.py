@@ -126,7 +126,7 @@ class Traversable(Protocol):
             )
         return match.joinpath(*names)
 
-    def __truediv__(self, child: StrPath) -> "Traversable":
+    def __truediv__(self, child: StrPath, /) -> "Traversable":
         """
         Return Traversable child in self
         """

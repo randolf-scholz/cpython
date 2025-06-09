@@ -93,7 +93,7 @@ class Address:
             return "{} <{}>".format(disp, addr_spec)
         return self.addr_spec
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, Address):
             return NotImplemented
         return (self.display_name == other.display_name and
@@ -144,7 +144,7 @@ class Group:
         adrstr = ' ' + adrstr if adrstr else adrstr
         return "{}:{};".format(disp, adrstr)
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, Group):
             return NotImplemented
         return (self.display_name == other.display_name and
@@ -587,7 +587,7 @@ class HeaderRegistry:
         """
         self.registry[name.lower()] = cls
 
-    def __getitem__(self, name):
+    def __getitem__(self, name, /):
         cls = self.registry.get(name.lower(), self.default_class)
         return type('_'+cls.__name__, (cls, self.base_class), {})
 

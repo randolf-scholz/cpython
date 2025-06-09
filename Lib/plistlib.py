@@ -93,7 +93,7 @@ class UID:
     def __reduce__(self):
         return self.__class__, (self.data,)
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, UID):
             return NotImplemented
         return self.data == other.data

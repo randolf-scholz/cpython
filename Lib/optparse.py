@@ -822,7 +822,7 @@ class Values:
 
     __repr__ = _repr
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, Values):
             return self.__dict__ == other.__dict__
         elif isinstance(other, dict):

@@ -20,7 +20,7 @@ available_timezones = _tzpath.available_timezones
 InvalidTZPathWarning = _tzpath.InvalidTZPathWarning
 
 
-def __getattr__(name):
+def __getattr__(name, /):
     if name == "TZPATH":
         return _tzpath.TZPATH
     else:

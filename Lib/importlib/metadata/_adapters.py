@@ -50,7 +50,7 @@ class Message(email.message.Message):
     def __iter__(self):
         return super().__iter__()
 
-    def __getitem__(self, item):
+    def __getitem__(self, item, /):
         """
         Warn users that a ``KeyError`` can be expected when a
         missing key is supplied. Ref python/importlib_metadata#371.

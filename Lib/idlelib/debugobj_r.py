@@ -12,7 +12,7 @@ class WrappedObjectTreeItem:
     def __init__(self, item):
         self.__item = item
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         value = getattr(self.__item, name)
         return value
 
@@ -27,7 +27,7 @@ class StubObjectTreeItem:
         self.sockio = sockio
         self.oid = oid
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         value = rpc.MethodProxy(self.sockio, self.oid, name)
         return value
 

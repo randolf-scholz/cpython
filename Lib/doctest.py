@@ -512,7 +512,7 @@ class Example:
         self.options = options
         self.exc_msg = exc_msg
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if type(self) is not type(other):
             return NotImplemented
 
@@ -576,7 +576,7 @@ class DocTest:
                 (self.__class__.__name__,
                  self.name, self.filename, self.lineno, examples))
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if type(self) is not type(other):
             return NotImplemented
 
@@ -591,7 +591,7 @@ class DocTest:
         return hash((self.docstring, self.name, self.filename, self.lineno))
 
     # This lets us sort tests by name:
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if not isinstance(other, DocTest):
             return NotImplemented
         self_lno = self.lineno if self.lineno is not None else -1
@@ -2470,7 +2470,7 @@ class DocTestCase(unittest.TestCase):
     def id(self):
         return self._dt_test.name
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if type(self) is not type(other):
             return NotImplemented
 

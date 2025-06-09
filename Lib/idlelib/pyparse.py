@@ -111,7 +111,7 @@ class ParseMap(dict):
     'x x x\tx\nx'
     """
     # Calling this triples access time; see bpo-32940
-    def __missing__(self, key):
+    def __missing__(self, key, /):
         return 120  # ord('x')
 
 

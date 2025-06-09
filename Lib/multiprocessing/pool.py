@@ -158,7 +158,7 @@ class _PoolCache(dict):
         self.notifier = notifier
         super().__init__(*args, **kwds)
 
-    def __delitem__(self, item):
+    def __delitem__(self, item, /):
         super().__delitem__(item)
 
         # Notify that the cache is empty. This is important because the
@@ -263,7 +263,7 @@ class Pool(object):
 
     # Copy globals as function locals to make sure that they are available
     # during Python shutdown when the Pool is destroyed.
-    def __del__(self, _warn=warnings.warn, RUN=RUN):
+    def __del__(self, /, _warn=warnings.warn, RUN=RUN):
         if self._state == RUN:
             _warn(f"unclosed running multiprocessing pool {self!r}",
                   ResourceWarning, source=self)
@@ -735,7 +735,7 @@ class Pool(object):
         self._check_running()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb, /):
         self.terminate()
 
 #

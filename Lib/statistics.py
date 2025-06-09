@@ -1358,7 +1358,7 @@ class NormalDist:
         "Square of the standard deviation."
         return self._sigma * self._sigma
 
-    def __add__(x1, x2):
+    def __add__(x1, x2, /):
         """Add a constant or another NormalDist instance.
 
         If *other* is a constant, translate mu by the constant,
@@ -1372,7 +1372,7 @@ class NormalDist:
             return NormalDist(x1._mu + x2._mu, hypot(x1._sigma, x2._sigma))
         return NormalDist(x1._mu + x2, x1._sigma)
 
-    def __sub__(x1, x2):
+    def __sub__(x1, x2, /):
         """Subtract a constant or another NormalDist instance.
 
         If *other* is a constant, translate by the constant mu,
@@ -1386,7 +1386,7 @@ class NormalDist:
             return NormalDist(x1._mu - x2._mu, hypot(x1._sigma, x2._sigma))
         return NormalDist(x1._mu - x2, x1._sigma)
 
-    def __mul__(x1, x2):
+    def __mul__(x1, x2, /):
         """Multiply both mu and sigma by a constant.
 
         Used for rescaling, perhaps to change measurement units.
@@ -1394,7 +1394,7 @@ class NormalDist:
         """
         return NormalDist(x1._mu * x2, x1._sigma * fabs(x2))
 
-    def __truediv__(x1, x2):
+    def __truediv__(x1, x2, /):
         """Divide both mu and sigma by a constant.
 
         Used for rescaling, perhaps to change measurement units.
@@ -1412,13 +1412,13 @@ class NormalDist:
 
     __radd__ = __add__
 
-    def __rsub__(x1, x2):
+    def __rsub__(x1, x2, /):
         "Subtract a NormalDist from a constant or another NormalDist."
         return -(x1 - x2)
 
     __rmul__ = __mul__
 
-    def __eq__(x1, x2):
+    def __eq__(x1, x2, /):
         "Two NormalDist objects are equal if their mu and sigma are both equal."
         if not isinstance(x2, NormalDist):
             return NotImplemented
@@ -1434,7 +1434,7 @@ class NormalDist:
     def __getstate__(self):
         return self._mu, self._sigma
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         self._mu, self._sigma = state
 
 

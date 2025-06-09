@@ -257,7 +257,7 @@ class _AssertRaisesContext(_AssertRaisesBaseContext):
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_value, tb):
+    def __exit__(self, exc_type, exc_value, tb, /):
         if exc_type is None:
             try:
                 exc_name = self.expected.__name__
@@ -304,7 +304,7 @@ class _AssertWarnsContext(_AssertRaisesBaseContext):
         warnings.simplefilter("always", self.expected)
         return self
 
-    def __exit__(self, exc_type, exc_value, tb):
+    def __exit__(self, exc_type, exc_value, tb, /):
         self.warnings_manager.__exit__(exc_type, exc_value, tb)
         if exc_type is not None:
             # let unexpected exceptions pass through
@@ -341,7 +341,7 @@ class _AssertWarnsContext(_AssertRaisesBaseContext):
 
 class _AssertNotWarnsContext(_AssertWarnsContext):
 
-    def __exit__(self, exc_type, exc_value, tb):
+    def __exit__(self, exc_type, exc_value, tb, /):
         self.warnings_manager.__exit__(exc_type, exc_value, tb)
         if exc_type is not None:
             # let unexpected exceptions pass through
@@ -525,7 +525,7 @@ class TestCase(object):
     def id(self):
         return "%s.%s" % (strclass(self.__class__), self._testMethodName)
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if type(self) is not type(other):
             return NotImplemented
 
@@ -1562,7 +1562,7 @@ class FunctionTestCase(TestCase):
     def id(self):
         return self._testFunc.__name__
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, self.__class__):
             return NotImplemented
 

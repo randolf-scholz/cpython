@@ -141,7 +141,7 @@ class _Database(collections.abc.MutableMapping):
         if self._index is None:
             raise error('DBM object has already been closed')
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         if isinstance(key, str):
             key = key.encode('utf-8')
         self._verify_open()
@@ -184,7 +184,7 @@ class _Database(collections.abc.MutableMapping):
             self._chmod(self._dirfile)
             f.write("%r, %r\n" % (key.decode("Latin-1"), pos_and_siz_pair))
 
-    def __setitem__(self, key, val):
+    def __setitem__(self, key, val, /):
         if self._readonly:
             raise error('The database is opened for reading only')
         if isinstance(key, str):
@@ -221,7 +221,7 @@ class _Database(collections.abc.MutableMapping):
             # is a disaster (for the database) if the program crashes
             # (so that _commit() never gets called).
 
-    def __delitem__(self, key):
+    def __delitem__(self, key, /):
         if self._readonly:
             raise error('The database is opened for reading only')
         if isinstance(key, str):
@@ -246,7 +246,7 @@ class _Database(collections.abc.MutableMapping):
         self._verify_open()
         return [(key, self[key]) for key in self._index.keys()]
 
-    def __contains__(self, key):
+    def __contains__(self, key, /):
         if isinstance(key, str):
             key = key.encode('utf-8')
         try:

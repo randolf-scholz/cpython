@@ -2993,7 +2993,7 @@ class TarFile(object):
         self._check()
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type, value, traceback, /):
         if type is None:
             self.close()
         else:

@@ -274,7 +274,7 @@ class Node(xml.dom.Node):
     def __enter__(self):
         return self
 
-    def __exit__(self, et, ev, tb):
+    def __exit__(self, et, ev, tb, /):
         self.unlink()
 
 defproperty(Node, "firstChild", doc="First child node, or None.")
@@ -523,7 +523,7 @@ class NamedNodeMap(object):
             L.append(((node.namespaceURI, node.localName), node.value))
         return L
 
-    def __contains__(self, key):
+    def __contains__(self, key, /):
         if isinstance(key, str):
             return key in self._attrs
         else:
@@ -549,29 +549,29 @@ class NamedNodeMap(object):
         else:
             return (id(self) > id(other)) - (id(self) < id(other))
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         return self._cmp(other) == 0
 
-    def __ge__(self, other):
+    def __ge__(self, other, /):
         return self._cmp(other) >= 0
 
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         return self._cmp(other) > 0
 
-    def __le__(self, other):
+    def __le__(self, other, /):
         return self._cmp(other) <= 0
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         return self._cmp(other) < 0
 
-    def __getitem__(self, attname_or_tuple):
+    def __getitem__(self, attname_or_tuple, /):
         if isinstance(attname_or_tuple, tuple):
             return self._attrsNS[attname_or_tuple]
         else:
             return self._attrs[attname_or_tuple]
 
     # same as set
-    def __setitem__(self, attname, value):
+    def __setitem__(self, attname, value, /):
         if isinstance(value, str):
             try:
                 node = self._attrs[attname]
@@ -638,7 +638,7 @@ class NamedNodeMap(object):
     def setNamedItemNS(self, node):
         return self.setNamedItem(node)
 
-    def __delitem__(self, attname_or_tuple):
+    def __delitem__(self, attname_or_tuple, /):
         node = self[attname_or_tuple]
         _clear_id_cache(node.ownerElement)
         node.unlink()
@@ -646,7 +646,7 @@ class NamedNodeMap(object):
     def __getstate__(self):
         return self._attrs, self._attrsNS, self._ownerElement
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         self._attrs, self._attrsNS, self._ownerElement = state
 
 defproperty(NamedNodeMap, "length",
@@ -1263,7 +1263,7 @@ class ReadOnlySequentialNamedNodeMap(object):
             if n.namespaceURI == namespaceURI and n.localName == localName:
                 return n
 
-    def __getitem__(self, name_or_tuple):
+    def __getitem__(self, name_or_tuple, /):
         if isinstance(name_or_tuple, tuple):
             node = self.getNamedItemNS(*name_or_tuple)
         else:
@@ -1299,7 +1299,7 @@ class ReadOnlySequentialNamedNodeMap(object):
     def __getstate__(self):
         return [self._seq]
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         self._seq = state[0]
 
 defproperty(ReadOnlySequentialNamedNodeMap, "length",
@@ -1548,7 +1548,7 @@ class ElementInfo(object):
     def __getstate__(self):
         return self.tagName
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         self.tagName = state
 
 def _clear_id_cache(node):

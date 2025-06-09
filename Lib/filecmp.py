@@ -253,7 +253,7 @@ class dircmp:
                      common=phase1, left_only=phase1, right_only=phase1,
                      left_list=phase0, right_list=phase0)
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr, /):
         if attr not in self.methodmap:
             raise AttributeError(attr)
         self.methodmap[attr](self)

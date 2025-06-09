@@ -401,7 +401,7 @@ class StreamWriter:
         self._transport = new_transport
         protocol._replace_transport(new_transport)
 
-    def __del__(self, warnings=warnings):
+    def __del__(self, /, warnings=warnings):
         if not self._transport.is_closing():
             if self._loop.is_closed():
                 warnings.warn("loop is closed", ResourceWarning)

@@ -117,7 +117,7 @@ class _SSLProtocolTransport(transports._FlowControlMixin,
         else:
             self._ssl_protocol = None
 
-    def __del__(self, _warnings=warnings):
+    def __del__(self, /, _warnings=warnings):
         if not self._closed:
             self._closed = True
             _warnings.warn(

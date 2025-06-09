@@ -114,11 +114,11 @@ else:
             """
             return _abc_register(cls, subclass)
 
-        def __instancecheck__(cls, instance):
+        def __instancecheck__(cls, instance, /):
             """Override for isinstance(instance, cls)."""
             return _abc_instancecheck(cls, instance)
 
-        def __subclasscheck__(cls, subclass):
+        def __subclasscheck__(cls, subclass, /):
             """Override for issubclass(subclass, cls)."""
             return _abc_subclasscheck(cls, subclass)
 

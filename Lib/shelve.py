@@ -98,7 +98,7 @@ class Shelf(collections.abc.MutableMapping):
     def __len__(self):
         return len(self.dict)
 
-    def __contains__(self, key):
+    def __contains__(self, key, /):
         return key.encode(self.keyencoding) in self.dict
 
     def get(self, key, default=None):
@@ -106,7 +106,7 @@ class Shelf(collections.abc.MutableMapping):
             return self[key]
         return default
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         try:
             value = self.cache[key]
         except KeyError:
@@ -116,7 +116,7 @@ class Shelf(collections.abc.MutableMapping):
                 self.cache[key] = value
         return value
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value, /):
         if self.writeback:
             self.cache[key] = value
         f = BytesIO()
@@ -124,7 +124,7 @@ class Shelf(collections.abc.MutableMapping):
         p.dump(value)
         self.dict[key.encode(self.keyencoding)] = f.getvalue()
 
-    def __delitem__(self, key):
+    def __delitem__(self, key, /):
         del self.dict[key.encode(self.keyencoding)]
         try:
             del self.cache[key]
@@ -134,7 +134,7 @@ class Shelf(collections.abc.MutableMapping):
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type, value, traceback, /):
         self.close()
 
     def close(self):

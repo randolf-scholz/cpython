@@ -1101,7 +1101,7 @@ class Popen:
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, value, traceback):
+    def __exit__(self, exc_type, value, traceback, /):
         if self.stdout:
             self.stdout.close()
         if self.stderr:
@@ -1128,7 +1128,7 @@ class Popen:
                 # Wait for the process to terminate, to avoid zombies.
                 self.wait()
 
-    def __del__(self, _maxsize=sys.maxsize, _warn=warnings.warn):
+    def __del__(self, /, _maxsize=sys.maxsize, _warn=warnings.warn):
         if not self._child_created:
             # We didn't get to successfully create a child process.
             return

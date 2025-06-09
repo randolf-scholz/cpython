@@ -18,7 +18,7 @@ class _WritelnDecorator(object):
     def __init__(self, stream):
         self.stream = stream
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr, /):
         if attr in ('stream', '__getstate__'):
             raise AttributeError(attr)
         return getattr(self.stream, attr)

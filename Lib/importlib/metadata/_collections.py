@@ -17,7 +17,7 @@ class FreezableDefaultDict(collections.defaultdict):
     1
     """
 
-    def __missing__(self, key):
+    def __missing__(self, key, /):
         return getattr(self, '_frozen', super().__missing__)(key)
 
     def freeze(self):

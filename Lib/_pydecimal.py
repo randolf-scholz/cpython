@@ -829,7 +829,7 @@ class Decimal(object):
     # This behavior is designed to conform as closely as possible to
     # that specified by IEEE 754.
 
-    def __eq__(self, other, context=None):
+    def __eq__(self, other, /, context=None):
         self, other = _convert_for_comparison(self, other, equality_op=True)
         if other is NotImplemented:
             return other
@@ -837,7 +837,7 @@ class Decimal(object):
             return False
         return self._cmp(other) == 0
 
-    def __lt__(self, other, context=None):
+    def __lt__(self, other, /, context=None):
         self, other = _convert_for_comparison(self, other)
         if other is NotImplemented:
             return other
@@ -846,7 +846,7 @@ class Decimal(object):
             return False
         return self._cmp(other) < 0
 
-    def __le__(self, other, context=None):
+    def __le__(self, other, /, context=None):
         self, other = _convert_for_comparison(self, other)
         if other is NotImplemented:
             return other
@@ -855,7 +855,7 @@ class Decimal(object):
             return False
         return self._cmp(other) <= 0
 
-    def __gt__(self, other, context=None):
+    def __gt__(self, other, /, context=None):
         self, other = _convert_for_comparison(self, other)
         if other is NotImplemented:
             return other
@@ -864,7 +864,7 @@ class Decimal(object):
             return False
         return self._cmp(other) > 0
 
-    def __ge__(self, other, context=None):
+    def __ge__(self, other, /, context=None):
         self, other = _convert_for_comparison(self, other)
         if other is NotImplemented:
             return other
@@ -979,7 +979,7 @@ class Decimal(object):
         # Invariant:  eval(repr(d)) == d
         return "Decimal('%s')" % str(self)
 
-    def __str__(self, eng=False, context=None):
+    def __str__(self, /, eng=False, context=None):
         """Return string representation of the number in scientific notation.
 
         Captures all of the information in the underlying representation.
@@ -1040,7 +1040,7 @@ class Decimal(object):
         """
         return self.__str__(eng=True, context=context)
 
-    def __neg__(self, context=None):
+    def __neg__(self, /, context=None):
         """Returns a copy with the sign switched.
 
         Rounds, if it has reason.
@@ -1062,7 +1062,7 @@ class Decimal(object):
 
         return ans._fix(context)
 
-    def __pos__(self, context=None):
+    def __pos__(self, /, context=None):
         """Returns a copy, unless it is a sNaN.
 
         Rounds the number (if more than precision digits)
@@ -1083,7 +1083,7 @@ class Decimal(object):
 
         return ans._fix(context)
 
-    def __abs__(self, round=True, context=None):
+    def __abs__(self, /, round=True, context=None):
         """Returns the absolute value of self.
 
         If the keyword argument 'round' is false, do not round.  The
@@ -1105,7 +1105,7 @@ class Decimal(object):
 
         return ans
 
-    def __add__(self, other, context=None):
+    def __add__(self, other, /, context=None):
         """Returns self + other.
 
         -INF + INF (or the reverse) cause InvalidOperation errors.
@@ -1193,7 +1193,7 @@ class Decimal(object):
 
     __radd__ = __add__
 
-    def __sub__(self, other, context=None):
+    def __sub__(self, other, /, context=None):
         """Return self - other"""
         other = _convert_other(other)
         if other is NotImplemented:
@@ -1207,7 +1207,7 @@ class Decimal(object):
         # self - other is computed as self + other.copy_negate()
         return self.__add__(other.copy_negate(), context=context)
 
-    def __rsub__(self, other, context=None):
+    def __rsub__(self, other, /, context=None):
         """Return other - self"""
         other = _convert_other(other)
         if other is NotImplemented:
@@ -1215,7 +1215,7 @@ class Decimal(object):
 
         return other.__sub__(self, context=context)
 
-    def __mul__(self, other, context=None):
+    def __mul__(self, other, /, context=None):
         """Return self * other.
 
         (+-) INF * 0 (or its reverse) raise InvalidOperation.
@@ -1272,7 +1272,7 @@ class Decimal(object):
         return ans
     __rmul__ = __mul__
 
-    def __truediv__(self, other, context=None):
+    def __truediv__(self, other, /, context=None):
         """Return self / other."""
         other = _convert_other(other)
         if other is NotImplemented:
@@ -1364,14 +1364,14 @@ class Decimal(object):
                                    'quotient too large in //, % or divmod')
         return ans, ans
 
-    def __rtruediv__(self, other, context=None):
+    def __rtruediv__(self, other, /, context=None):
         """Swaps self/other and returns __truediv__."""
         other = _convert_other(other)
         if other is NotImplemented:
             return other
         return other.__truediv__(self, context=context)
 
-    def __divmod__(self, other, context=None):
+    def __divmod__(self, other, /, context=None):
         """
         Return (self // other, self % other)
         """
@@ -1407,14 +1407,14 @@ class Decimal(object):
         remainder = remainder._fix(context)
         return quotient, remainder
 
-    def __rdivmod__(self, other, context=None):
+    def __rdivmod__(self, other, /, context=None):
         """Swaps self/other and returns __divmod__."""
         other = _convert_other(other)
         if other is NotImplemented:
             return other
         return other.__divmod__(self, context=context)
 
-    def __mod__(self, other, context=None):
+    def __mod__(self, other, /, context=None):
         """
         self % other
         """
@@ -1441,7 +1441,7 @@ class Decimal(object):
         remainder = remainder._fix(context)
         return remainder
 
-    def __rmod__(self, other, context=None):
+    def __rmod__(self, other, /, context=None):
         """Swaps self/other and returns __mod__."""
         other = _convert_other(other)
         if other is NotImplemented:
@@ -1523,7 +1523,7 @@ class Decimal(object):
         ans = _dec_from_triple(sign, str(r), ideal_exponent)
         return ans._fix(context)
 
-    def __floordiv__(self, other, context=None):
+    def __floordiv__(self, other, /, context=None):
         """self // other"""
         other = _convert_other(other)
         if other is NotImplemented:
@@ -1551,7 +1551,7 @@ class Decimal(object):
 
         return self._divide(other, context)[0]
 
-    def __rfloordiv__(self, other, context=None):
+    def __rfloordiv__(self, other, /, context=None):
         """Swaps self/other and returns __floordiv__."""
         other = _convert_other(other)
         if other is NotImplemented:
@@ -1778,7 +1778,7 @@ class Decimal(object):
         ROUND_05UP = _round_05up,
     )
 
-    def __round__(self, n=None):
+    def __round__(self, /, n=None):
         """Round self to the nearest integer, or to a given precision.
 
         If only one argument is supplied, round a finite Decimal
@@ -2247,7 +2247,7 @@ class Decimal(object):
             zeros = 0
         return _dec_from_triple(0, str_xc+'0'*zeros, xe-zeros)
 
-    def __pow__(self, other, modulo=None, context=None):
+    def __pow__(self, other, /, modulo=None, context=None):
         """Return self ** other [ % modulo].
 
         With two arguments, compute self**other.
@@ -2463,7 +2463,7 @@ class Decimal(object):
 
         return ans
 
-    def __rpow__(self, other, modulo=None, context=None):
+    def __rpow__(self, other, /, modulo=None, context=None):
         """Swaps self/other and returns __pow__."""
         other = _convert_other(other)
         if other is NotImplemented:
@@ -3700,14 +3700,14 @@ class Decimal(object):
             return self     # I'm immutable; therefore I am my own clone
         return self.__class__(str(self))
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self, memo, /):
         if type(self) is Decimal:
             return self     # My components are also immutable
         return self.__class__(str(self))
 
     # PEP 3101 support.  the _localeconv keyword argument should be
     # considered private: it's provided for ease of testing only.
-    def __format__(self, specifier, context=None, _localeconv=None):
+    def __format__(self, specifier, /, context=None, _localeconv=None):
         """Format a Decimal instance according to the given specifier.
 
         The specifier should be a standard format specifier, with the
@@ -3829,7 +3829,7 @@ class _ContextManager(object):
         self.saved_context = getcontext()
         setcontext(self.new_context)
         return self.new_context
-    def __exit__(self, t, v, tb):
+    def __exit__(self, t, v, tb, /):
         setcontext(self.saved_context)
 
 class Context(object):
@@ -3912,7 +3912,7 @@ class Context(object):
                 raise KeyError("%s is not a valid signal dict" % d)
         return object.__setattr__(self, name, d)
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name, value, /):
         if name == 'prec':
             return self._set_integer_check(name, value, 1, 'inf')
         elif name == 'Emin':
@@ -3937,7 +3937,7 @@ class Context(object):
             raise AttributeError(
                 "'decimal.Context' object has no attribute '%s'" % name)
 
-    def __delattr__(self, name):
+    def __delattr__(self, name, /):
         raise AttributeError("%s cannot be deleted" % name)
 
     # Support for pickling, copy, and deepcopy

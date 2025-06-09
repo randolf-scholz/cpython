@@ -17,7 +17,7 @@ class ExceptionTest(unittest.TestCase):
 
     def test_print_exception_unhashable(self):
         class UnhashableException(Exception):
-            def __eq__(self, other):
+            def __eq__(self, other, /):
                 return True
 
         ex1 = UnhashableException('ex1')

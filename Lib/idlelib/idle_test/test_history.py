@@ -59,7 +59,7 @@ class TextWrapper:
     def __init__(self, master):
         self.text = tkText(master=master)
         self._bell = False
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         return getattr(self.text, name)
     def bell(self):
         self._bell = True

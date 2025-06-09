@@ -48,7 +48,7 @@ else:
     from .unix_events import *  # pragma: no cover
     __all__ += unix_events.__all__
 
-def __getattr__(name: str):
+def __getattr__(name: str, /):
     import warnings
 
     deprecated = {

@@ -72,14 +72,14 @@ class WeakMethod(ref):
             return None
         return self._meth_type(func, obj)
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, WeakMethod):
             if not self._alive or not other._alive:
                 return self is other
             return ref.__eq__(self, other) and self._func_ref == other._func_ref
         return NotImplemented
 
-    def __ne__(self, other):
+    def __ne__(self, other, /):
         if isinstance(other, WeakMethod):
             if not self._alive or not other._alive:
                 return self is not other
@@ -112,20 +112,20 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
         self.data = {}
         self.update(other, **kw)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         o = self.data[key]()
         if o is None:
             raise KeyError(key)
         else:
             return o
 
-    def __delitem__(self, key):
+    def __delitem__(self, key, /):
         del self.data[key]
 
     def __len__(self):
         return len(self.data)
 
-    def __contains__(self, key):
+    def __contains__(self, key, /):
         try:
             o = self.data[key]()
         except KeyError:
@@ -135,7 +135,7 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
     def __repr__(self):
         return "<%s at %#x>" % (self.__class__.__name__, id(self))
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value, /):
         self.data[key] = KeyedRef(value, self._remove, key)
 
     def copy(self):
@@ -148,7 +148,7 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
 
     __copy__ = copy
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self, memo, /):
         from copy import deepcopy
         new = self.__class__()
         for key, wr in self.data.copy().items():
@@ -254,18 +254,18 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
         """
         return list(self.data.copy().values())
 
-    def __ior__(self, other):
+    def __ior__(self, other, /):
         self.update(other)
         return self
 
-    def __or__(self, other):
+    def __or__(self, other, /):
         if isinstance(other, _collections_abc.Mapping):
             c = self.copy()
             c.update(other)
             return c
         return NotImplemented
 
-    def __ror__(self, other):
+    def __ror__(self, other, /):
         if isinstance(other, _collections_abc.Mapping):
             c = self.__class__()
             c.update(other)
@@ -319,10 +319,10 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
         if dict is not None:
             self.update(dict)
 
-    def __delitem__(self, key):
+    def __delitem__(self, key, /):
         del self.data[ref(key)]
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         return self.data[ref(key)]
 
     def __len__(self):
@@ -331,7 +331,7 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
     def __repr__(self):
         return "<%s at %#x>" % (self.__class__.__name__, id(self))
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value, /):
         self.data[ref(key, self._remove)] = value
 
     def copy(self):
@@ -344,7 +344,7 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
 
     __copy__ = copy
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self, memo, /):
         from copy import deepcopy
         new = self.__class__()
         for key, value in self.data.copy().items():
@@ -356,7 +356,7 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
     def get(self, key, default=None):
         return self.data.get(ref(key),default)
 
-    def __contains__(self, key):
+    def __contains__(self, key, /):
         try:
             wr = ref(key)
         except TypeError:
@@ -417,18 +417,18 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
         if len(kwargs):
             self.update(kwargs)
 
-    def __ior__(self, other):
+    def __ior__(self, other, /):
         self.update(other)
         return self
 
-    def __or__(self, other):
+    def __or__(self, other, /):
         if isinstance(other, _collections_abc.Mapping):
             c = self.copy()
             c.update(other)
             return c
         return NotImplemented
 
-    def __ror__(self, other):
+    def __ror__(self, other, /):
         if isinstance(other, _collections_abc.Mapping):
             c = self.__class__()
             c.update(other)

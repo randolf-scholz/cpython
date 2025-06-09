@@ -84,14 +84,14 @@ class _PolicyBase:
             object.__setattr__(newpolicy, attr, value)
         return newpolicy
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name, value, /):
         if hasattr(self, name):
             msg = "{!r} object attribute {!r} is read-only"
         else:
             msg = "{!r} object has no attribute {!r}"
         raise AttributeError(msg.format(self.__class__.__name__, name))
 
-    def __add__(self, other):
+    def __add__(self, other, /):
         """Non-default values from right operand override those from left.
 
         The object returned is a new instance of the subclass.

@@ -32,7 +32,7 @@ class WeakSet:
     def __len__(self):
         return len(self.data)
 
-    def __contains__(self, item):
+    def __contains__(self, item, /):
         try:
             wr = ref(item)
         except TypeError:
@@ -71,7 +71,7 @@ class WeakSet:
         for element in other:
             self.add(element)
 
-    def __ior__(self, other):
+    def __ior__(self, other, /):
         self.update(other)
         return self
 
@@ -83,7 +83,7 @@ class WeakSet:
 
     def difference_update(self, other):
         self.__isub__(other)
-    def __isub__(self, other):
+    def __isub__(self, other, /):
         if self is other:
             self.data.clear()
         else:
@@ -96,7 +96,7 @@ class WeakSet:
 
     def intersection_update(self, other):
         self.__iand__(other)
-    def __iand__(self, other):
+    def __iand__(self, other, /):
         self.data.intersection_update(ref(item) for item in other)
         return self
 
@@ -104,17 +104,17 @@ class WeakSet:
         return self.data.issubset(ref(item) for item in other)
     __le__ = issubset
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         return self.data < set(map(ref, other))
 
     def issuperset(self, other):
         return self.data.issuperset(ref(item) for item in other)
     __ge__ = issuperset
 
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         return self.data > set(map(ref, other))
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, self.__class__):
             return NotImplemented
         return self.data == set(map(ref, other))
@@ -127,7 +127,7 @@ class WeakSet:
 
     def symmetric_difference_update(self, other):
         self.__ixor__(other)
-    def __ixor__(self, other):
+    def __ixor__(self, other, /):
         if self is other:
             self.data.clear()
         else:

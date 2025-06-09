@@ -49,13 +49,13 @@ class Headers:
         """Return the total number of headers, including duplicates."""
         return len(self._headers)
 
-    def __setitem__(self, name, val):
+    def __setitem__(self, name, val, /):
         """Set the value of a header."""
         del self[name]
         self._headers.append(
             (self._convert_string_type(name), self._convert_string_type(val)))
 
-    def __delitem__(self,name):
+    def __delitem__(self, name, /):
         """Delete all occurrences of a header, if present.
 
         Does *not* raise an exception if the header is missing.
@@ -63,7 +63,7 @@ class Headers:
         name = self._convert_string_type(name.lower())
         self._headers[:] = [kv for kv in self._headers if kv[0].lower() != name]
 
-    def __getitem__(self,name):
+    def __getitem__(self, name, /):
         """Get the first header value for 'name'
 
         Return None if the header is missing instead of raising an exception.
@@ -74,7 +74,7 @@ class Headers:
         """
         return self.get(name)
 
-    def __contains__(self, name):
+    def __contains__(self, name, /):
         """Return true if the message contains the header."""
         return self.get(name) is not None
 

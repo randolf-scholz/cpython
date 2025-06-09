@@ -59,7 +59,7 @@ class Runner:
         self._lazy_init()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb, /):
         self.close()
 
     def close(self):

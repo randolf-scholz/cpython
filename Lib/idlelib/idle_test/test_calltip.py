@@ -235,7 +235,7 @@ bytes() -> empty bytes object''')
 
     def test_buggy_getattr_class(self):
         class NoCall:
-            def __getattr__(self, name):  # Not invoked for class attribute.
+            def __getattr__(self, name, /):  # Not invoked for class attribute.
                 raise IndexError  # Bug.
         class CallA(NoCall):
             def __call__(self, ci):  # Bug does not matter.

@@ -26,7 +26,7 @@ class _FailedTest(case.TestCase):
         self._exception = exception
         super(_FailedTest, self).__init__(method_name)
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         if name != self._testMethodName:
             return super(_FailedTest, self).__getattr__(name)
         def testFailure():

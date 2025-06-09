@@ -272,7 +272,7 @@ class IMAP4:
         raise self.error('server not IMAP4 compliant')
 
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr, /):
         #       Allow UPPERCASE variants of IMAP4 command methods.
         if attr in Commands:
             return getattr(self, attr.lower())
@@ -1474,7 +1474,7 @@ class Idler:
 
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb, /):
         imap = self._imap
 
         if __debug__ and imap.debug >= 4:

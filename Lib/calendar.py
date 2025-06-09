@@ -43,7 +43,7 @@ class IllegalWeekdayError(ValueError):
         return "bad weekday number %r; must be 0 (Monday) to 6 (Sunday)" % self.weekday
 
 
-def __getattr__(name):
+def __getattr__(name, /):
     if name in ('January', 'February'):
         import warnings
         warnings.warn(f"The '{name}' attribute is deprecated, use '{name.upper()}' instead",
@@ -101,7 +101,7 @@ class _localized_month:
     def __init__(self, format):
         self.format = format
 
-    def __getitem__(self, i):
+    def __getitem__(self, i, /):
         funcs = self._months[i]
         if isinstance(i, slice):
             return [f(self.format) for f in funcs]
@@ -120,7 +120,7 @@ class _localized_day:
     def __init__(self, format):
         self.format = format
 
-    def __getitem__(self, i):
+    def __getitem__(self, i, /):
         funcs = self._days[i]
         if isinstance(i, slice):
             return [f(self.format) for f in funcs]

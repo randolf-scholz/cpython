@@ -327,7 +327,7 @@ class _Sentinel(object):
     def __init__(self):
         self._sentinels = {}
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         if name == '__bases__':
             # Without this help(unittest.mock) raises an exception
             raise AttributeError
@@ -372,7 +372,7 @@ def _delegating_property(name):
 
 class _CallList(list):
 
-    def __contains__(self, value):
+    def __contains__(self, value, /):
         if not isinstance(value, list):
             return list.__contains__(self, value)
         len_value = len(value)
@@ -683,7 +683,7 @@ class NonCallableMock(Base):
             setattr(obj, final, val)
 
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         if name in {'_mock_methods', '_mock_unsafe'}:
             raise AttributeError(name)
         elif self._mock_methods is not None:
@@ -797,7 +797,7 @@ class NonCallableMock(Base):
         return sorted(set(extras + from_type + from_dict + from_child_mocks))
 
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name, value, /):
         if name in _allowed_names:
             # property setters go through here
             return object.__setattr__(self, name, value)
@@ -839,7 +839,7 @@ class NonCallableMock(Base):
         return object.__setattr__(self, name, value)
 
 
-    def __delattr__(self, name):
+    def __delattr__(self, name, /):
         if name in _all_magics and name in type(self).__dict__:
             delattr(type(self), name)
             if name not in self.__dict__:
@@ -1117,7 +1117,7 @@ class _AnyComparer(list):
     argument of ANY, flipping the components of item and self from
     their traditional locations so that ANY is guaranteed to be on
     the left."""
-    def __contains__(self, item):
+    def __contains__(self, item, /):
         for _call in self:
             assert len(item) == len(_call)
             if all([
@@ -2102,7 +2102,7 @@ _return_values = {
 
 
 def _get_eq(self):
-    def __eq__(other):
+    def __eq__(other, /):
         ret_val = self.__eq__._mock_return_value
         if ret_val is not DEFAULT:
             return ret_val
@@ -2112,7 +2112,7 @@ def _get_eq(self):
     return __eq__
 
 def _get_ne(self):
-    def __ne__(other):
+    def __ne__(other, /):
         if self.__ne__._mock_return_value is not DEFAULT:
             return DEFAULT
         if self is other:
@@ -2257,7 +2257,7 @@ class MagicProxy(Base):
         _set_return_value(parent, m, entry)
         return m
 
-    def __get__(self, obj, _type=None):
+    def __get__(self, obj, /, _type=None):
         return self.create_mock()
 
 
@@ -2514,10 +2514,10 @@ class AsyncMock(AsyncMockMixin, AsyncMagicMixin, Mock):
 class _ANY(object):
     "A helper object that compares equal to everything."
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         return True
 
-    def __ne__(self, other):
+    def __ne__(self, other, /):
         return False
 
     def __repr__(self):
@@ -2603,7 +2603,7 @@ class _Call(tuple):
         self._mock_from_kall = from_kall
 
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         try:
             len_other = len(other)
         except TypeError:
@@ -2667,14 +2667,14 @@ class _Call(tuple):
         return _Call((self._mock_name, args, kwargs), name=name, parent=self)
 
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr, /):
         if self._mock_name is None:
             return _Call(name=attr, from_kall=False)
         name = '%s.%s' % (self._mock_name, attr)
         return _Call(name=name, parent=self, from_kall=False)
 
 
-    def __getattribute__(self, attr):
+    def __getattribute__(self, attr, /):
         if attr in tuple.__dict__:
             raise AttributeError
         return tuple.__getattribute__(self, attr)
@@ -3050,9 +3050,9 @@ class PropertyMock(Mock):
     def _get_child_mock(self, /, **kwargs):
         return MagicMock(**kwargs)
 
-    def __get__(self, obj, obj_type=None):
+    def __get__(self, obj, /, obj_type=None):
         return self()
-    def __set__(self, obj, val):
+    def __set__(self, obj, val, /):
         self(val)
 
 

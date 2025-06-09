@@ -411,7 +411,7 @@ class Message:
         """Return the total number of headers, including duplicates."""
         return len(self._headers)
 
-    def __getitem__(self, name):
+    def __getitem__(self, name, /):
         """Get a header value.
 
         Return None if the header is missing instead of raising an exception.
@@ -422,7 +422,7 @@ class Message:
         """
         return self.get(name)
 
-    def __setitem__(self, name, val):
+    def __setitem__(self, name, val, /):
         """Set the value of a header.
 
         Note: this does not overwrite an existing header with the same field
@@ -440,7 +440,7 @@ class Message:
                                          "in a message".format(max_count, name))
         self._headers.append(self.policy.header_store_parse(name, val))
 
-    def __delitem__(self, name):
+    def __delitem__(self, name, /):
         """Delete all occurrences of a header, if present.
 
         Does not raise an exception if the header is missing.
@@ -452,7 +452,7 @@ class Message:
                 newheaders.append((k, v))
         self._headers = newheaders
 
-    def __contains__(self, name):
+    def __contains__(self, name, /):
         name_lower = name.lower()
         for k, v in self._headers:
             if name_lower == k.lower():

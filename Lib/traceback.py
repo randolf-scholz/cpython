@@ -318,7 +318,7 @@ class FrameSummary:
         self.locals = {k: _safe_string(v, 'local', func=repr)
             for k, v in locals.items()} if locals else None
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, FrameSummary):
             return (self.filename == other.filename and
                     self.lineno == other.lineno and
@@ -328,7 +328,7 @@ class FrameSummary:
             return (self.filename, self.lineno, self.name, self.line) == other
         return NotImplemented
 
-    def __getitem__(self, pos):
+    def __getitem__(self, pos, /):
         return (self.filename, self.lineno, self.name, self.line)[pos]
 
     def __iter__(self):
@@ -1215,7 +1215,7 @@ class TracebackException:
         for frame in self.stack:
             frame.line
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, TracebackException):
             return self.__dict__ == other.__dict__
         return NotImplemented

@@ -239,7 +239,7 @@ class Charset:
     def __repr__(self):
         return self.input_charset.lower()
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         return str(self) == str(other).lower()
 
     def get_body_encoding(self):

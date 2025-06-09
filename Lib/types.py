@@ -213,7 +213,7 @@ class DynamicClassAttribute:
         # support for abstract methods
         self.__isabstractmethod__ = bool(getattr(fget, '__isabstractmethod__', False))
 
-    def __get__(self, instance, ownerclass=None):
+    def __get__(self, instance, /, ownerclass=None):
         if instance is None:
             if self.__isabstractmethod__:
                 return self
@@ -222,12 +222,12 @@ class DynamicClassAttribute:
             raise AttributeError("unreadable attribute")
         return self.fget(instance)
 
-    def __set__(self, instance, value):
+    def __set__(self, instance, value, /):
         if self.fset is None:
             raise AttributeError("can't set attribute")
         self.fset(instance, value)
 
-    def __delete__(self, instance):
+    def __delete__(self, instance, /):
         if self.fdel is None:
             raise AttributeError("can't delete attribute")
         self.fdel(instance)

@@ -200,13 +200,13 @@ class _JoinablePath(ABC):
         """
         return self.with_segments(vfspath(self), *pathsegments)
 
-    def __truediv__(self, key):
+    def __truediv__(self, key, /):
         try:
             return self.with_segments(vfspath(self), key)
         except TypeError:
             return NotImplemented
 
-    def __rtruediv__(self, key):
+    def __rtruediv__(self, key, /):
         try:
             return self.with_segments(key, vfspath(self))
         except TypeError:
@@ -264,7 +264,7 @@ class _ReadablePath(_JoinablePath):
         raise NotImplementedError
 
     @abstractmethod
-    def __open_rb__(self, buffering=-1):
+    def __open_rb__(self, /, buffering=-1):
         """
         Open the file pointed to by this path for reading in binary mode and
         return a file object, like open(mode='rb').
@@ -394,7 +394,7 @@ class _WritablePath(_JoinablePath):
         raise NotImplementedError
 
     @abstractmethod
-    def __open_wb__(self, buffering=-1):
+    def __open_wb__(self, /, buffering=-1):
         """
         Open the file pointed to by this path for writing in binary mode and
         return a file object, like open(mode='wb').

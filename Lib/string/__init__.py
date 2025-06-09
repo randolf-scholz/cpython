@@ -54,7 +54,7 @@ _sentinel_dict = {}
 
 class _TemplatePattern:
     # This descriptor is overwritten in ``Template._compile_pattern()``.
-    def __get__(self, instance, cls=None):
+    def __get__(self, instance, /, cls=None):
         if cls is None:
             return self
         return cls._compile_pattern()

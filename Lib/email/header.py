@@ -252,7 +252,7 @@ class Header:
 
     # Rich comparison operators for equality only.  BAW: does it make sense to
     # have or explicitly disable <, <=, >, >= operators?
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         # other may be a Header or a string.  Both are fine so coerce
         # ourselves to a unicode (of the unencoded header value), swap the
         # args and do another comparison.

@@ -232,7 +232,7 @@ class _RLock:
             self._owner = None
             self._block.release()
 
-    def __exit__(self, t, v, tb):
+    def __exit__(self, t, v, tb, /):
         self.release()
 
     def locked(self):
@@ -532,7 +532,7 @@ class Semaphore:
             self._value += n
             self._cond.notify(n)
 
-    def __exit__(self, t, v, tb):
+    def __exit__(self, t, v, tb, /):
         self.release()
 
 

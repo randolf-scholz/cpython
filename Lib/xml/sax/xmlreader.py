@@ -312,13 +312,13 @@ class AttributesImpl:
     def __len__(self):
         return len(self._attrs)
 
-    def __getitem__(self, name):
+    def __getitem__(self, name, /):
         return self._attrs[name]
 
     def keys(self):
         return list(self._attrs.keys())
 
-    def __contains__(self, name):
+    def __contains__(self, name, /):
         return name in self._attrs
 
     def get(self, name, alternative=None):

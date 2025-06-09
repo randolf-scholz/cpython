@@ -814,7 +814,7 @@ class timedelta:
         """microseconds"""
         return self._microseconds
 
-    def __add__(self, other):
+    def __add__(self, other, /):
         if isinstance(other, timedelta):
             # for CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
@@ -825,7 +825,7 @@ class timedelta:
 
     __radd__ = __add__
 
-    def __sub__(self, other):
+    def __sub__(self, other, /):
         if isinstance(other, timedelta):
             # for CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
@@ -834,7 +834,7 @@ class timedelta:
                              self._microseconds - other._microseconds)
         return NotImplemented
 
-    def __rsub__(self, other):
+    def __rsub__(self, other, /):
         if isinstance(other, timedelta):
             return -self + other
         return NotImplemented
@@ -855,7 +855,7 @@ class timedelta:
         else:
             return self
 
-    def __mul__(self, other):
+    def __mul__(self, other, /):
         if isinstance(other, int):
             # for CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
@@ -874,7 +874,7 @@ class timedelta:
         return ((self._days * (24*3600) + self._seconds) * 1000000 +
                 self._microseconds)
 
-    def __floordiv__(self, other):
+    def __floordiv__(self, other, /):
         if not isinstance(other, (int, timedelta)):
             return NotImplemented
         usec = self._to_microseconds()
@@ -883,7 +883,7 @@ class timedelta:
         if isinstance(other, int):
             return timedelta(0, 0, usec // other)
 
-    def __truediv__(self, other):
+    def __truediv__(self, other, /):
         if not isinstance(other, (int, float, timedelta)):
             return NotImplemented
         usec = self._to_microseconds()
@@ -895,13 +895,13 @@ class timedelta:
             a, b = other.as_integer_ratio()
             return timedelta(0, 0, _divide_and_round(b * usec, a))
 
-    def __mod__(self, other):
+    def __mod__(self, other, /):
         if isinstance(other, timedelta):
             r = self._to_microseconds() % other._to_microseconds()
             return timedelta(0, 0, r)
         return NotImplemented
 
-    def __divmod__(self, other):
+    def __divmod__(self, other, /):
         if isinstance(other, timedelta):
             q, r = divmod(self._to_microseconds(),
                           other._to_microseconds())
@@ -910,31 +910,31 @@ class timedelta:
 
     # Comparisons of timedelta objects with other.
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, timedelta):
             return self._cmp(other) == 0
         else:
             return NotImplemented
 
-    def __le__(self, other):
+    def __le__(self, other, /):
         if isinstance(other, timedelta):
             return self._cmp(other) <= 0
         else:
             return NotImplemented
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if isinstance(other, timedelta):
             return self._cmp(other) < 0
         else:
             return NotImplemented
 
-    def __ge__(self, other):
+    def __ge__(self, other, /):
         if isinstance(other, timedelta):
             return self._cmp(other) >= 0
         else:
             return NotImplemented
 
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         if isinstance(other, timedelta):
             return self._cmp(other) > 0
         else:
@@ -1123,7 +1123,7 @@ class date:
         """
         return _wrap_strftime(self, format, self.timetuple())
 
-    def __format__(self, fmt):
+    def __format__(self, fmt, /):
         if not isinstance(fmt, str):
             raise TypeError("must be str, not %s" % type(fmt).__name__)
         if len(fmt) != 0:
@@ -1189,27 +1189,27 @@ class date:
 
     # Comparisons of date objects with other.
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, date) and not isinstance(other, datetime):
             return self._cmp(other) == 0
         return NotImplemented
 
-    def __le__(self, other):
+    def __le__(self, other, /):
         if isinstance(other, date) and not isinstance(other, datetime):
             return self._cmp(other) <= 0
         return NotImplemented
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if isinstance(other, date) and not isinstance(other, datetime):
             return self._cmp(other) < 0
         return NotImplemented
 
-    def __ge__(self, other):
+    def __ge__(self, other, /):
         if isinstance(other, date) and not isinstance(other, datetime):
             return self._cmp(other) >= 0
         return NotImplemented
 
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         if isinstance(other, date) and not isinstance(other, datetime):
             return self._cmp(other) > 0
         return NotImplemented
@@ -1229,7 +1229,7 @@ class date:
 
     # Computations
 
-    def __add__(self, other):
+    def __add__(self, other, /):
         "Add a date to a timedelta."
         if isinstance(other, timedelta):
             o = self.toordinal() + other.days
@@ -1240,7 +1240,7 @@ class date:
 
     __radd__ = __add__
 
-    def __sub__(self, other):
+    def __sub__(self, other, /):
         """Subtract two dates, or a date and a timedelta."""
         if isinstance(other, timedelta):
             return self + timedelta(-other.days)
@@ -1506,31 +1506,31 @@ class time:
 
     # Comparisons of time objects with other.
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, time):
             return self._cmp(other, allow_mixed=True) == 0
         else:
             return NotImplemented
 
-    def __le__(self, other):
+    def __le__(self, other, /):
         if isinstance(other, time):
             return self._cmp(other) <= 0
         else:
             return NotImplemented
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if isinstance(other, time):
             return self._cmp(other) < 0
         else:
             return NotImplemented
 
-    def __ge__(self, other):
+    def __ge__(self, other, /):
         if isinstance(other, time):
             return self._cmp(other) >= 0
         else:
             return NotImplemented
 
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         if isinstance(other, time):
             return self._cmp(other) > 0
         else:
@@ -1669,7 +1669,7 @@ class time:
                      0, 1, -1)
         return _wrap_strftime(self, format, timetuple)
 
-    def __format__(self, fmt):
+    def __format__(self, fmt, /):
         if not isinstance(fmt, str):
             raise TypeError("must be str, not %s" % type(fmt).__name__)
         if len(fmt) != 0:
@@ -1762,7 +1762,7 @@ class time:
         self._microsecond = (((us1 << 8) | us2) << 8) | us3
         self._tzinfo = tzinfo
 
-    def __reduce_ex__(self, protocol):
+    def __reduce_ex__(self, protocol, /):
         return (self.__class__, self._getstate(protocol))
 
     def __reduce__(self):
@@ -2252,31 +2252,31 @@ class datetime(date):
 
     # Comparisons of datetime objects with other.
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, datetime):
             return self._cmp(other, allow_mixed=True) == 0
         else:
             return NotImplemented
 
-    def __le__(self, other):
+    def __le__(self, other, /):
         if isinstance(other, datetime):
             return self._cmp(other) <= 0
         else:
             return NotImplemented
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if isinstance(other, datetime):
             return self._cmp(other) < 0
         else:
             return NotImplemented
 
-    def __ge__(self, other):
+    def __ge__(self, other, /):
         if isinstance(other, datetime):
             return self._cmp(other) >= 0
         else:
             return NotImplemented
 
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         if isinstance(other, datetime):
             return self._cmp(other) > 0
         else:
@@ -2319,7 +2319,7 @@ class datetime(date):
             return -1
         return diff and 1 or 0
 
-    def __add__(self, other):
+    def __add__(self, other, /):
         "Add a datetime and a timedelta."
         if not isinstance(other, timedelta):
             return NotImplemented
@@ -2340,7 +2340,7 @@ class datetime(date):
 
     __radd__ = __add__
 
-    def __sub__(self, other):
+    def __sub__(self, other, /):
         "Subtract two datetimes, or a datetime and a timedelta."
         if not isinstance(other, datetime):
             if isinstance(other, timedelta):
@@ -2411,7 +2411,7 @@ class datetime(date):
         self._microsecond = (((us1 << 8) | us2) << 8) | us3
         self._tzinfo = tzinfo
 
-    def __reduce_ex__(self, protocol):
+    def __reduce_ex__(self, protocol, /):
         return (self.__class__, self._getstate(protocol))
 
     def __reduce__(self):
@@ -2470,7 +2470,7 @@ class timezone(tzinfo):
             return (self._offset,)
         return (self._offset, self._name)
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, timezone):
             return self._offset == other._offset
         return NotImplemented

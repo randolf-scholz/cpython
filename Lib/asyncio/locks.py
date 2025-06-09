@@ -16,7 +16,7 @@ class _ContextManagerMixin:
         # statement for locks.
         return None
 
-    async def __aexit__(self, exc_type, exc, tb):
+    async def __aexit__(self, exc_type, exc, tb, /):
         self.release()
 
 

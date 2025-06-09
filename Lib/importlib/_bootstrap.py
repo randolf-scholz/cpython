@@ -620,7 +620,7 @@ class ModuleSpec:
             args.append(f'submodule_search_locations={self.submodule_search_locations}')
         return f'{self.__class__.__name__}({", ".join(args)})'
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         smsl = self.submodule_search_locations
         try:
             return (self.name == other.name and
@@ -1226,7 +1226,7 @@ class _ImportLockContext:
         """Acquire the import lock."""
         _imp.acquire_lock()
 
-    def __exit__(self, exc_type, exc_value, exc_traceback):
+    def __exit__(self, exc_type, exc_value, exc_traceback, /):
         """Release the import lock regardless of any raised exceptions."""
         _imp.release_lock()
 
@@ -1462,7 +1462,7 @@ def _calc___package__(globals):
     return package
 
 
-def __import__(name, globals=None, locals=None, fromlist=(), level=0):
+def __import__(name, /, globals=None, locals=None, fromlist=(), level=0):
     """Import a module.
 
     The 'globals' argument is used to infer where the import is occurring from

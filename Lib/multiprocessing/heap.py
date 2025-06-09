@@ -54,7 +54,7 @@ if sys.platform == 'win32':
             assert_spawning(self)
             return self._state
 
-        def __setstate__(self, state):
+        def __setstate__(self, state, /):
             self.size, self.name = self._state = state
             # Reopen existing mmap
             self.buffer = mmap.mmap(-1, self.size, tagname=self.name)

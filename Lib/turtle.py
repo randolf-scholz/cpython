@@ -246,17 +246,17 @@ class Vec2D(tuple):
     """
     def __new__(cls, x, y):
         return tuple.__new__(cls, (x, y))
-    def __add__(self, other):
+    def __add__(self, other, /):
         return Vec2D(self[0]+other[0], self[1]+other[1])
-    def __mul__(self, other):
+    def __mul__(self, other, /):
         if isinstance(other, Vec2D):
             return self[0]*other[0]+self[1]*other[1]
         return Vec2D(self[0]*other, self[1]*other)
-    def __rmul__(self, other):
+    def __rmul__(self, other, /):
         if isinstance(other, int) or isinstance(other, float):
             return Vec2D(self[0]*other, self[1]*other)
         return NotImplemented
-    def __sub__(self, other):
+    def __sub__(self, other, /):
         return Vec2D(self[0]-other[0], self[1]-other[1])
     def __neg__(self):
         return Vec2D(-self[0], -self[1])

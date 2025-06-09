@@ -31,7 +31,7 @@ class SAXException(Exception):
         "Create a string representation of the exception."
         return self._msg
 
-    def __getitem__(self, ix):
+    def __getitem__(self, ix, /):
         """Avoids weird error messages if someone does exception[ix] by
         mistake, since Exception has __getitem__ defined."""
         raise AttributeError("__getitem__")

@@ -208,10 +208,10 @@ class Element:
             )
         return len(self._children) != 0 # emulate old behaviour, for now
 
-    def __getitem__(self, index):
+    def __getitem__(self, index, /):
         return self._children[index]
 
-    def __setitem__(self, index, element):
+    def __setitem__(self, index, element, /):
         if isinstance(index, slice):
             for elt in element:
                 self._assert_is_element(elt)
@@ -219,7 +219,7 @@ class Element:
             self._assert_is_element(element)
         self._children[index] = element
 
-    def __delitem__(self, index):
+    def __delitem__(self, index, /):
         del self._children[index]
 
     def append(self, subelement):
@@ -491,23 +491,23 @@ class QName:
         return '<%s %r>' % (self.__class__.__name__, self.text)
     def __hash__(self):
         return hash(self.text)
-    def __le__(self, other):
+    def __le__(self, other, /):
         if isinstance(other, QName):
             return self.text <= other.text
         return self.text <= other
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if isinstance(other, QName):
             return self.text < other.text
         return self.text < other
-    def __ge__(self, other):
+    def __ge__(self, other, /):
         if isinstance(other, QName):
             return self.text >= other.text
         return self.text >= other
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         if isinstance(other, QName):
             return self.text > other.text
         return self.text > other
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, QName):
             return self.text == other.text
         return self.text == other

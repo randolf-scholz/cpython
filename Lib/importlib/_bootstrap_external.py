@@ -923,7 +923,7 @@ class FileLoader:
         self.name = fullname
         self.path = path
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         return (self.__class__ == other.__class__ and
                 self.__dict__ == other.__dict__)
 
@@ -1044,7 +1044,7 @@ class ExtensionFileLoader(FileLoader, _LoaderBasics):
         self.name = name
         self.path = path
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         return (self.__class__ == other.__class__ and
                 self.__dict__ == other.__dict__)
 
@@ -1134,10 +1134,10 @@ class _NamespacePath:
     def __iter__(self):
         return iter(self._recalculate())
 
-    def __getitem__(self, index):
+    def __getitem__(self, index, /):
         return self._recalculate()[index]
 
-    def __setitem__(self, index, path):
+    def __setitem__(self, index, path, /):
         self._path[index] = path
 
     def __len__(self):
@@ -1146,7 +1146,7 @@ class _NamespacePath:
     def __repr__(self):
         return f'_NamespacePath({self._path!r})'
 
-    def __contains__(self, item):
+    def __contains__(self, item, /):
         return item in self._recalculate()
 
     def append(self, item):

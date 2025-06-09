@@ -65,7 +65,7 @@ class NodeList(list):
                       doc="The number of nodes in the NodeList.")
 
     # For backward compatibility
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         if state is None:
             state = []
         self[:] = state
@@ -74,12 +74,12 @@ class NodeList(list):
 class EmptyNodeList(tuple):
     __slots__ = ()
 
-    def __add__(self, other):
+    def __add__(self, other, /):
         NL = NodeList()
         NL.extend(other)
         return NL
 
-    def __radd__(self, other):
+    def __radd__(self, other, /):
         NL = NodeList()
         NL.extend(other)
         return NL

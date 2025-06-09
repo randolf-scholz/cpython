@@ -337,7 +337,7 @@ class ConvertingMixin(object):
 class ConvertingDict(dict, ConvertingMixin):
     """A converting dictionary wrapper."""
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         value = dict.__getitem__(self, key)
         return self.convert_with_key(key, value)
 
@@ -351,7 +351,7 @@ class ConvertingDict(dict, ConvertingMixin):
 
 class ConvertingList(list, ConvertingMixin):
     """A converting list wrapper."""
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         value = list.__getitem__(self, key)
         return self.convert_with_key(key, value)
 
@@ -361,7 +361,7 @@ class ConvertingList(list, ConvertingMixin):
 
 class ConvertingTuple(tuple, ConvertingMixin):
     """A converting tuple wrapper."""
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         value = tuple.__getitem__(self, key)
         # Can't replace a tuple entry.
         return self.convert_with_key(key, value, replace=False)

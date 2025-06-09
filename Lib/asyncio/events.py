@@ -162,27 +162,27 @@ class TimerHandle(Handle):
     def __hash__(self):
         return hash(self._when)
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if isinstance(other, TimerHandle):
             return self._when < other._when
         return NotImplemented
 
-    def __le__(self, other):
+    def __le__(self, other, /):
         if isinstance(other, TimerHandle):
             return self._when < other._when or self.__eq__(other)
         return NotImplemented
 
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         if isinstance(other, TimerHandle):
             return self._when > other._when
         return NotImplemented
 
-    def __ge__(self, other):
+    def __ge__(self, other, /):
         if isinstance(other, TimerHandle):
             return self._when > other._when or self.__eq__(other)
         return NotImplemented
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if isinstance(other, TimerHandle):
             return (self._when == other._when and
                     self._callback == other._callback and

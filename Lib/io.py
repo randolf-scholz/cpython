@@ -121,7 +121,7 @@ class Reader(metaclass=abc.ABCMeta):
         """
 
     @classmethod
-    def __subclasshook__(cls, C):
+    def __subclasshook__(cls, C, /):
         if cls is Reader:
             return _check_methods(C, "read")
         return NotImplemented
@@ -142,7 +142,7 @@ class Writer(metaclass=abc.ABCMeta):
         """Write *data* to the output stream and return the number of items written."""
 
     @classmethod
-    def __subclasshook__(cls, C):
+    def __subclasshook__(cls, C, /):
         if cls is Writer:
             return _check_methods(C, "write")
         return NotImplemented

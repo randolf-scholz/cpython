@@ -145,7 +145,7 @@ class ThemeSection(Mapping[str, str]):
             color_state[color_name] = ""
         return cls(**color_state)
 
-    def __getitem__(self, key: str) -> str:
+    def __getitem__(self, key: str, /) -> str:
         return self._name_to_value(key)
 
     def __len__(self) -> int:

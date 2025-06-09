@@ -94,12 +94,12 @@ class Complex(Number):
         raise NotImplementedError
 
     @abstractmethod
-    def __add__(self, other):
+    def __add__(self, other, /):
         """self + other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __radd__(self, other):
+    def __radd__(self, other, /):
         """other + self"""
         raise NotImplementedError
 
@@ -113,41 +113,41 @@ class Complex(Number):
         """+self"""
         raise NotImplementedError
 
-    def __sub__(self, other):
+    def __sub__(self, other, /):
         """self - other"""
         return self + -other
 
-    def __rsub__(self, other):
+    def __rsub__(self, other, /):
         """other - self"""
         return -self + other
 
     @abstractmethod
-    def __mul__(self, other):
+    def __mul__(self, other, /):
         """self * other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rmul__(self, other):
+    def __rmul__(self, other, /):
         """other * self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __truediv__(self, other):
+    def __truediv__(self, other, /):
         """self / other: Should promote to float when necessary."""
         raise NotImplementedError
 
     @abstractmethod
-    def __rtruediv__(self, other):
+    def __rtruediv__(self, other, /):
         """other / self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __pow__(self, exponent):
+    def __pow__(self, exponent, /):
         """self ** exponent; should promote to float or complex when necessary."""
         raise NotImplementedError
 
     @abstractmethod
-    def __rpow__(self, base):
+    def __rpow__(self, base, /):
         """base ** self"""
         raise NotImplementedError
 
@@ -162,7 +162,7 @@ class Complex(Number):
         raise NotImplementedError
 
     @abstractmethod
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         """self == other"""
         raise NotImplementedError
 
@@ -211,7 +211,7 @@ class Real(Complex):
         raise NotImplementedError
 
     @abstractmethod
-    def __round__(self, ndigits=None):
+    def __round__(self, /, ndigits=None):
         """Rounds self to ndigits decimal places, defaulting to 0.
 
         If ndigits is omitted or None, returns an Integral, otherwise
@@ -219,7 +219,7 @@ class Real(Complex):
         """
         raise NotImplementedError
 
-    def __divmod__(self, other):
+    def __divmod__(self, other, /):
         """divmod(self, other): The pair (self // other, self % other).
 
         Sometimes this can be computed faster than the pair of
@@ -227,7 +227,7 @@ class Real(Complex):
         """
         return (self // other, self % other)
 
-    def __rdivmod__(self, other):
+    def __rdivmod__(self, other, /):
         """divmod(other, self): The pair (other // self, other % self).
 
         Sometimes this can be computed faster than the pair of
@@ -236,34 +236,34 @@ class Real(Complex):
         return (other // self, other % self)
 
     @abstractmethod
-    def __floordiv__(self, other):
+    def __floordiv__(self, other, /):
         """self // other: The floor() of self/other."""
         raise NotImplementedError
 
     @abstractmethod
-    def __rfloordiv__(self, other):
+    def __rfloordiv__(self, other, /):
         """other // self: The floor() of other/self."""
         raise NotImplementedError
 
     @abstractmethod
-    def __mod__(self, other):
+    def __mod__(self, other, /):
         """self % other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rmod__(self, other):
+    def __rmod__(self, other, /):
         """other % self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         """self < other
 
         < on Reals defines a total ordering, except perhaps for NaN."""
         raise NotImplementedError
 
     @abstractmethod
-    def __le__(self, other):
+    def __le__(self, other, /):
         """self <= other"""
         raise NotImplementedError
 
@@ -335,7 +335,7 @@ class Integral(Rational):
         return int(self)
 
     @abstractmethod
-    def __pow__(self, exponent, modulus=None):
+    def __pow__(self, exponent, /, modulus=None):
         """self ** exponent % modulus, but maybe faster.
 
         Accept the modulus argument if you want to support the
@@ -346,52 +346,52 @@ class Integral(Rational):
         raise NotImplementedError
 
     @abstractmethod
-    def __lshift__(self, other):
+    def __lshift__(self, other, /):
         """self << other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rlshift__(self, other):
+    def __rlshift__(self, other, /):
         """other << self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rshift__(self, other):
+    def __rshift__(self, other, /):
         """self >> other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rrshift__(self, other):
+    def __rrshift__(self, other, /):
         """other >> self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __and__(self, other):
+    def __and__(self, other, /):
         """self & other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rand__(self, other):
+    def __rand__(self, other, /):
         """other & self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __xor__(self, other):
+    def __xor__(self, other, /):
         """self ^ other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rxor__(self, other):
+    def __rxor__(self, other, /):
         """other ^ self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __or__(self, other):
+    def __or__(self, other, /):
         """self | other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __ror__(self, other):
+    def __ror__(self, other, /):
         """other | self"""
         raise NotImplementedError
 

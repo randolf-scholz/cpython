@@ -6,7 +6,7 @@ class Delegator:
         # Cache is used to only remove added attributes
         # when changing the delegate.
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         attr = getattr(self.delegate, name) # May raise AttributeError
         setattr(self, name, attr)
         self.__cache.add(name)

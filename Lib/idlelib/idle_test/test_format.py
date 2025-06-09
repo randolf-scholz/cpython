@@ -233,7 +233,7 @@ class FormatClassTest(unittest.TestCase):
 class TextWrapper:
     def __init__(self, master):
         self.text = Text(master=master)
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         return getattr(self.text, name)
     def undo_block_start(self): pass
     def undo_block_stop(self): pass

@@ -27,12 +27,12 @@ class AbstractContextManager(abc.ABC):
         return self
 
     @abc.abstractmethod
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback, /):
         """Raise any exception triggered within the runtime context."""
         return None
 
     @classmethod
-    def __subclasshook__(cls, C):
+    def __subclasshook__(cls, C, /):
         if cls is AbstractContextManager:
             return _collections_abc._check_methods(C, "__enter__", "__exit__")
         return NotImplemented
@@ -51,12 +51,12 @@ class AbstractAsyncContextManager(abc.ABC):
         return self
 
     @abc.abstractmethod
-    async def __aexit__(self, exc_type, exc_value, traceback):
+    async def __aexit__(self, exc_type, exc_value, traceback, /):
         """Raise any exception triggered within the runtime context."""
         return None
 
     @classmethod
-    def __subclasshook__(cls, C):
+    def __subclasshook__(cls, C, /):
         if cls is AbstractAsyncContextManager:
             return _collections_abc._check_methods(C, "__aenter__",
                                                    "__aexit__")
@@ -142,7 +142,7 @@ class _GeneratorContextManager(
         except StopIteration:
             raise RuntimeError("generator didn't yield") from None
 
-    def __exit__(self, typ, value, traceback):
+    def __exit__(self, typ, value, traceback, /):
         if typ is None:
             try:
                 next(self.gen)
@@ -215,7 +215,7 @@ class _AsyncGeneratorContextManager(
         except StopAsyncIteration:
             raise RuntimeError("generator didn't yield") from None
 
-    async def __aexit__(self, typ, value, traceback):
+    async def __aexit__(self, typ, value, traceback, /):
         if typ is None:
             try:
                 await anext(self.gen)
@@ -404,7 +404,7 @@ class _RedirectStream(AbstractContextManager):
         setattr(sys, self._stream, self._new_target)
         return self._new_target
 
-    def __exit__(self, exctype, excinst, exctb):
+    def __exit__(self, exctype, excinst, exctb, /):
         setattr(sys, self._stream, self._old_targets.pop())
 
 
@@ -447,7 +447,7 @@ class suppress(AbstractContextManager):
     def __enter__(self):
         pass
 
-    def __exit__(self, exctype, excinst, exctb):
+    def __exit__(self, exctype, excinst, exctb, /):
         # Unlike isinstance and issubclass, CPython exception handling
         # currently only looks at the concrete type hierarchy (ignoring
         # the instance and subclass checking hooks). While Guido considers

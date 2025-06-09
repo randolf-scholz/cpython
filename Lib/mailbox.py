@@ -47,7 +47,7 @@ class Mailbox:
         """Remove the keyed message; raise KeyError if it doesn't exist."""
         raise NotImplementedError('Method must be implemented by subclass')
 
-    def __delitem__(self, key):
+    def __delitem__(self, key, /):
         self.remove(key)
 
     def discard(self, key):
@@ -57,7 +57,7 @@ class Mailbox:
         except KeyError:
             pass
 
-    def __setitem__(self, key, message):
+    def __setitem__(self, key, message, /):
         """Replace the keyed message; raise KeyError if it doesn't exist."""
         raise NotImplementedError('Method must be implemented by subclass')
 
@@ -68,7 +68,7 @@ class Mailbox:
         except KeyError:
             return default
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         """Return the keyed message; raise KeyError if it doesn't exist."""
         if not self._factory:
             return self.get_message(key)
@@ -132,7 +132,7 @@ class Mailbox:
         """Return a list of (key, message) tuples. Memory intensive."""
         return list(self.iteritems())
 
-    def __contains__(self, key):
+    def __contains__(self, key, /):
         """Return True if the keyed message exists, False otherwise."""
         raise NotImplementedError('Method must be implemented by subclass')
 
@@ -343,7 +343,7 @@ class Maildir(Mailbox):
         except (KeyError, FileNotFoundError):
             pass
 
-    def __setitem__(self, key, message):
+    def __setitem__(self, key, message, /):
         """Replace the keyed message; raise KeyError if it doesn't exist."""
         old_subpath = self._lookup(key)
         temp_key = self.add(message)
@@ -455,7 +455,7 @@ class Maildir(Mailbox):
                 continue
             yield key
 
-    def __contains__(self, key):
+    def __contains__(self, key, /):
         """Return True if the keyed message exists, False otherwise."""
         self._refresh()
         return key in self._toc
@@ -668,7 +668,7 @@ class _singlefileMailbox(Mailbox):
         del self._toc[key]
         self._pending = True
 
-    def __setitem__(self, key, message):
+    def __setitem__(self, key, message, /):
         """Replace the keyed message; raise KeyError if it doesn't exist."""
         self._lookup(key)
         self._toc[key] = self._append_message(message)
@@ -679,7 +679,7 @@ class _singlefileMailbox(Mailbox):
         self._lookup()
         yield from self._toc.keys()
 
-    def __contains__(self, key):
+    def __contains__(self, key, /):
         """Return True if the keyed message exists, False otherwise."""
         self._lookup()
         return key in self._toc
@@ -1052,7 +1052,7 @@ class MH(Mailbox):
             f.close()
             os.remove(path)
 
-    def __setitem__(self, key, message):
+    def __setitem__(self, key, message, /):
         """Replace the keyed message; raise KeyError if it doesn't exist."""
         path = os.path.join(self._path, str(key))
         try:
@@ -1138,7 +1138,7 @@ class MH(Mailbox):
         return iter(sorted(int(entry) for entry in os.listdir(self._path)
                                       if entry.isdigit()))
 
-    def __contains__(self, key):
+    def __contains__(self, key, /):
         """Return True if the keyed message exists, False otherwise."""
         return os.path.exists(os.path.join(self._path, str(key)))
 
@@ -1336,7 +1336,7 @@ class Babyl(_singlefileMailbox):
         if key in self._labels:
             del self._labels[key]
 
-    def __setitem__(self, key, message):
+    def __setitem__(self, key, message, /):
         """Replace the keyed message; raise KeyError if it doesn't exist."""
         _singlefileMailbox.__setitem__(self, key, message)
         if isinstance(message, BabylMessage):

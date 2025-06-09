@@ -66,7 +66,7 @@ class TaskGroup:
 
         return self
 
-    async def __aexit__(self, et, exc, tb):
+    async def __aexit__(self, et, exc, tb, /):
         tb = None
         try:
             return await self._aexit(et, exc)

@@ -39,7 +39,7 @@ def __dir__():
     return __all__ + ('__author__', '__doc__')
 
 
-def __getattr__(name):
+def __getattr__(name, /):
     global ProcessPoolExecutor, ThreadPoolExecutor, InterpreterPoolExecutor
 
     if name == 'ProcessPoolExecutor':

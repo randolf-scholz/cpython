@@ -163,13 +163,13 @@ class SubPattern:
         return repr(self.data)
     def __len__(self):
         return len(self.data)
-    def __delitem__(self, index):
+    def __delitem__(self, index, /):
         del self.data[index]
-    def __getitem__(self, index):
+    def __getitem__(self, index, /):
         if isinstance(index, slice):
             return SubPattern(self.state, self.data[index])
         return self.data[index]
-    def __setitem__(self, index, code):
+    def __setitem__(self, index, code, /):
         self.data[index] = code
     def insert(self, index, code):
         self.data.insert(index, code)

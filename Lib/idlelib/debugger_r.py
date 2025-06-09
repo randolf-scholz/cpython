@@ -203,7 +203,7 @@ class FrameProxy:
         self._oid = "idb_adapter"
         self._dictcache = {}
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         if name[:1] == "_":
             raise AttributeError(name)
         if name == "f_code":
@@ -244,7 +244,7 @@ class CodeProxy:
         self._oid = oid
         self._cid = cid
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         if name == "co_name":
             return self._conn.remotecall(self._oid, "code_name",
                                          (self._cid,), {})
@@ -268,11 +268,11 @@ class DictProxy:
         return self._conn.remotecall(self._oid,
                                      "dict_keys_list", (self._did,), {})
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         return self._conn.remotecall(self._oid, "dict_item",
                                      (self._did, key), {})
 
-    def __getattr__(self, name):
+    def __getattr__(self, name, /):
         ##print("*** Failed DictProxy.__getattr__:", name)
         raise AttributeError(name)
 

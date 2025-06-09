@@ -87,7 +87,7 @@ def _gettextwriter(out, encoding):
         # destroyed
         class _wrapper:
             __class__ = out.__class__
-            def __getattr__(self, name):
+            def __getattr__(self, name, /):
                 return getattr(out, name)
         buffer = _wrapper()
         buffer.close = lambda: None

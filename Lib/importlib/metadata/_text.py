@@ -64,22 +64,22 @@ class FoldedCase(str):
     False
     """
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         return self.lower() < other.lower()
 
-    def __gt__(self, other):
+    def __gt__(self, other, /):
         return self.lower() > other.lower()
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         return self.lower() == other.lower()
 
-    def __ne__(self, other):
+    def __ne__(self, other, /):
         return self.lower() != other.lower()
 
     def __hash__(self):
         return hash(self.lower())
 
-    def __contains__(self, other):
+    def __contains__(self, other, /):
         return super().lower().__contains__(other.lower())
 
     def in_(self, other):

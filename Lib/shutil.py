@@ -1654,7 +1654,7 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None):
                     return name
     return None
 
-def __getattr__(name):
+def __getattr__(name, /):
     if name == "ExecError":
         import warnings
         warnings._deprecated(

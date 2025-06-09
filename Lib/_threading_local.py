@@ -96,11 +96,11 @@ class local:
         impl.create_dict()
         return self
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name, /):
         with _patch(self):
             return object.__getattribute__(self, name)
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name, value, /):
         if name == '__dict__':
             raise AttributeError(
                 "%r object attribute '__dict__' is read-only"
@@ -108,7 +108,7 @@ class local:
         with _patch(self):
             return object.__setattr__(self, name, value)
 
-    def __delattr__(self, name):
+    def __delattr__(self, name, /):
         if name == '__dict__':
             raise AttributeError(
                 "%r object attribute '__dict__' is read-only"

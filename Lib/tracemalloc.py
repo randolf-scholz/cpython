@@ -42,7 +42,7 @@ class Statistic:
     def __hash__(self):
         return hash((self.traceback, self.size, self.count))
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, Statistic):
             return NotImplemented
         return (self.traceback == other.traceback
@@ -85,7 +85,7 @@ class StatisticDiff:
         return hash((self.traceback, self.size, self.size_diff,
                      self.count, self.count_diff))
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, StatisticDiff):
             return NotImplemented
         return (self.traceback == other.traceback
@@ -156,12 +156,12 @@ class Frame:
     def lineno(self):
         return self._frame[1]
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, Frame):
             return NotImplemented
         return (self._frame == other._frame)
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if not isinstance(other, Frame):
             return NotImplemented
         return (self._frame < other._frame)
@@ -200,24 +200,24 @@ class Traceback(Sequence):
     def __len__(self):
         return len(self._frames)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index, /):
         if isinstance(index, slice):
             return tuple(Frame(trace) for trace in self._frames[index])
         else:
             return Frame(self._frames[index])
 
-    def __contains__(self, frame):
+    def __contains__(self, frame, /):
         return frame._frame in self._frames
 
     def __hash__(self):
         return hash(self._frames)
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, Traceback):
             return NotImplemented
         return (self._frames == other._frames)
 
-    def __lt__(self, other):
+    def __lt__(self, other, /):
         if not isinstance(other, Traceback):
             return NotImplemented
         return (self._frames < other._frames)
@@ -292,7 +292,7 @@ class Trace:
     def traceback(self):
         return Traceback(*self._trace[2:])
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, Trace):
             return NotImplemented
         return (self._trace == other._trace)
@@ -317,16 +317,16 @@ class _Traces(Sequence):
     def __len__(self):
         return len(self._traces)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index, /):
         if isinstance(index, slice):
             return tuple(Trace(trace) for trace in self._traces[index])
         else:
             return Trace(self._traces[index])
 
-    def __contains__(self, trace):
+    def __contains__(self, trace, /):
         return trace._trace in self._traces
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, _Traces):
             return NotImplemented
         return (self._traces == other._traces)

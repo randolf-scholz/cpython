@@ -1617,7 +1617,7 @@ class OptionMenu(Menubutton):
         self.set_menu(default, *values)
 
 
-    def __getitem__(self, item):
+    def __getitem__(self, item, /):
         if item == 'menu':
             return self.nametowidget(Menubutton.__getitem__(self, item))
 

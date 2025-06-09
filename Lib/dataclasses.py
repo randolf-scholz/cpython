@@ -263,7 +263,7 @@ class InitVar:
             type_name = repr(self.type)
         return f'dataclasses.InitVar[{type_name}]'
 
-    def __class_getitem__(cls, type):
+    def __class_getitem__(cls, type, /):
         return InitVar(type)
 
 # Instances of Field are only ever created from within this module,
@@ -333,7 +333,7 @@ class Field:
     # Note that in _process_class, this Field object is overwritten
     # with the default value, so the end result is a descriptor that
     # had __set_name__ called on it at the right time.
-    def __set_name__(self, owner, name):
+    def __set_name__(self, owner, name, /):
         func = getattr(type(self.default), '__set_name__', None)
         if func:
             # There is a __set_name__ method on the descriptor, call

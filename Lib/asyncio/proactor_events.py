@@ -111,7 +111,7 @@ class _ProactorBasePipeTransport(transports._FlowControlMixin,
             self._read_fut.cancel()
             self._read_fut = None
 
-    def __del__(self, _warn=warnings.warn):
+    def __del__(self, /, _warn=warnings.warn):
         if self._sock is not None:
             _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
             self._sock.close()

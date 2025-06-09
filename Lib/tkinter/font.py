@@ -104,15 +104,15 @@ class Font:
         return f"<{self.__class__.__module__}.{self.__class__.__qualname__}" \
                f" object {self.name!r}>"
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         if not isinstance(other, Font):
             return NotImplemented
         return self.name == other.name and self._tk == other._tk
 
-    def __getitem__(self, key):
+    def __getitem__(self, key, /):
         return self.cget(key)
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value, /):
         self.configure(**{key: value})
 
     def __del__(self):

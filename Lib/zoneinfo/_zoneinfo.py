@@ -401,7 +401,7 @@ class _ttinfo:
         self.dstoff = dstoff
         self.tzname = tzname
 
-    def __eq__(self, other):
+    def __eq__(self, other, /):
         return (
             self.utcoff == other.utcoff
             and self.dstoff == other.dstoff

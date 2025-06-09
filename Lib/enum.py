@@ -183,7 +183,7 @@ class property(DynamicClassAttribute):
     _attr_type = None
     _cls_type = None
 
-    def __get__(self, instance, ownerclass=None):
+    def __get__(self, instance, /, ownerclass=None):
         if instance is None:
             if self.member is not None:
                 return self.member
@@ -208,21 +208,21 @@ class property(DynamicClassAttribute):
                     '%r has no attribute %r' % (ownerclass, self.name)
                     ) from None
 
-    def __set__(self, instance, value):
+    def __set__(self, instance, value, /):
         if self.fset is not None:
             return self.fset(instance, value)
         raise AttributeError(
                 "<enum %r> cannot set attribute %r" % (self.clsname, self.name)
                 )
 
-    def __delete__(self, instance):
+    def __delete__(self, instance, /):
         if self.fdel is not None:
             return self.fdel(instance)
         raise AttributeError(
                 "<enum %r> cannot delete attribute %r" % (self.clsname, self.name)
                 )
 
-    def __set_name__(self, ownerclass, name):
+    def __set_name__(self, ownerclass, name, /):
         self.name = name
         self.clsname = ownerclass.__name__
 
@@ -235,7 +235,7 @@ class _proto_member:
     def __init__(self, value):
         self.value = value
 
-    def __set_name__(self, enum_class, member_name):
+    def __set_name__(self, enum_class, member_name, /):
         """
         convert each quasi-member into an instance of the new enum class
         """
@@ -338,7 +338,7 @@ class EnumDict(dict):
         self._auto_called = False
         self._cls_name = cls_name
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value, /):
         """
         Changes anything not dundered or not a descriptor.
 
@@ -463,7 +463,7 @@ class EnumType(type):
     """
 
     @classmethod
-    def __prepare__(metacls, cls, bases, **kwds):
+    def __prepare__(metacls, cls, bases, /, **kwds):
         # check that previous enum members do not exist
         metacls._check_for_existing_members_(cls, bases)
         # create the namespace dict
@@ -721,7 +721,7 @@ class EnumType(type):
                 boundary=boundary,
                 )
 
-    def __contains__(cls, value):
+    def __contains__(cls, value, /):
         """Return True if `value` is in `cls`.
 
         `value` is in `cls` if:
@@ -742,7 +742,7 @@ class EnumType(type):
                 or value in cls._hashable_values_
                 )
 
-    def __delattr__(cls, attr):
+    def __delattr__(cls, attr, /):
         # nicer error message when someone tries to delete an attribute
         # (see issue19025).
         if attr in cls._member_map_:
@@ -767,7 +767,7 @@ class EnumType(type):
             # return whatever mixed-in data type has
             return sorted(set(dir(cls._member_type_)) | interesting)
 
-    def __getitem__(cls, name):
+    def __getitem__(cls, name, /):
         """
         Return the member matching `name`.
         """
@@ -807,7 +807,7 @@ class EnumType(type):
         """
         return (cls._member_map_[name] for name in reversed(cls._member_names_))
 
-    def __setattr__(cls, name, value):
+    def __setattr__(cls, name, value, /):
         """
         Block attempts to reassign Enum members.
 
@@ -1292,16 +1292,16 @@ class Enum(metaclass=EnumType):
                 )
         return names
 
-    def __format__(self, format_spec):
+    def __format__(self, format_spec, /):
         return str.__format__(str(self), format_spec)
 
     def __hash__(self):
         return hash(self._name_)
 
-    def __reduce_ex__(self, proto):
+    def __reduce_ex__(self, proto, /):
         return self.__class__, (self._value_, )
 
-    def __deepcopy__(self,memo):
+    def __deepcopy__(self, memo, /):
         return self
 
     def __copy__(self):
@@ -1535,7 +1535,7 @@ class Flag(Enum, boundary=STRICT):
             cls._value2member_map_[neg_value] = pseudo_member
         return pseudo_member
 
-    def __contains__(self, other):
+    def __contains__(self, other, /):
         """
         Returns True if self has at least the same flags set as other.
         """
@@ -1579,7 +1579,7 @@ class Flag(Enum, boundary=STRICT):
             return flag
         return NotImplemented
 
-    def __or__(self, other):
+    def __or__(self, other, /):
         other_value = self._get_value(other)
         if other_value is NotImplemented:
             return NotImplemented
@@ -1590,7 +1590,7 @@ class Flag(Enum, boundary=STRICT):
         value = self._value_
         return self.__class__(value | other_value)
 
-    def __and__(self, other):
+    def __and__(self, other, /):
         other_value = self._get_value(other)
         if other_value is NotImplemented:
             return NotImplemented
@@ -1601,7 +1601,7 @@ class Flag(Enum, boundary=STRICT):
         value = self._value_
         return self.__class__(value & other_value)
 
-    def __xor__(self, other):
+    def __xor__(self, other, /):
         other_value = self._get_value(other)
         if other_value is NotImplemented:
             return NotImplemented

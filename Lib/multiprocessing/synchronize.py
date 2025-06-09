@@ -113,7 +113,7 @@ class SemLock(object):
             h = sl.handle
         return (h, sl.kind, sl.maxvalue, sl.name)
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         self._semlock = _multiprocessing.SemLock._rebuild(*state)
         util.debug('recreated blocker with handle %r' % state[0])
         self._make_methods()
@@ -230,7 +230,7 @@ class Condition(object):
         return (self._lock, self._sleeping_count,
                 self._woken_count, self._wait_semaphore)
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         (self._lock, self._sleeping_count,
          self._woken_count, self._wait_semaphore) = state
         self._make_methods()
@@ -380,7 +380,7 @@ class Barrier(threading.Barrier):
         self._state = 0
         self._count = 0
 
-    def __setstate__(self, state):
+    def __setstate__(self, state, /):
         (self._parties, self._action, self._timeout,
          self._cond, self._wrapper) = state
         self._array = self._wrapper.create_memoryview().cast('i')

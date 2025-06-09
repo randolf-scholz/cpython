@@ -31,7 +31,7 @@ __all__ = ['AppleFrameworkLoader', 'BYTECODE_SUFFIXES', 'BuiltinImporter',
            'WindowsRegistryFinder', 'all_suffixes']
 
 
-def __getattr__(name):
+def __getattr__(name, /):
     import warnings
 
     if name == 'DEBUG_BYTECODE_SUFFIXES':

@@ -431,7 +431,7 @@ class ShareableList:
             transform_code
         )
 
-    def __getitem__(self, position):
+    def __getitem__(self, position, /):
         position = position if position >= 0 else position + self._list_len
         try:
             offset = self._offset_data_start + self._allocated_offsets[position]
@@ -448,7 +448,7 @@ class ShareableList:
 
         return v
 
-    def __setitem__(self, position, value):
+    def __setitem__(self, position, value, /):
         position = position if position >= 0 else position + self._list_len
         try:
             item_offset = self._allocated_offsets[position]

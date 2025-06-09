@@ -168,7 +168,7 @@ class _LazyModule(types.ModuleType):
 
     """A subclass of the module type which triggers loading upon attribute access."""
 
-    def __getattribute__(self, attr):
+    def __getattribute__(self, attr, /):
         """Trigger the load of the module and return the attribute."""
         __spec__ = object.__getattribute__(self, '__spec__')
         loader_state = __spec__.loader_state
@@ -223,7 +223,7 @@ class _LazyModule(types.ModuleType):
 
         return getattr(self, attr)
 
-    def __delattr__(self, attr):
+    def __delattr__(self, attr, /):
         """Trigger the load and then perform the deletion."""
         # To trigger the load and raise an exception if the attribute
         # doesn't exist.
